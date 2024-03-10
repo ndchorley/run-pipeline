@@ -14,9 +14,8 @@ pub fn run(pipeline_file: &str, writer: &mut impl Write) {
         .get("stages")
         .unwrap()
         .iter()
-        .map(|value| {
-            let stage = value.as_mapping().unwrap();
-
+        .map(|value| value.as_mapping().unwrap())
+        .map(|stage| {
             let name =
                 stage.get("name").unwrap().as_str().unwrap();
 
