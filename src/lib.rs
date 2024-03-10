@@ -6,14 +6,12 @@ pub fn run(pipeline_file: &str, writer: &mut impl Write) {
     let pipeline_string =
         fs::read_to_string(pipeline_file).unwrap();
 
-    let stages: Vec<String> =
-        parse_stages(&pipeline_string).iter()
-        .map(|stage| {
-            return String::from("name: ") + &stage.name + ", command: " + &stage.command;
-        })
-        .collect();
+    let stages = parse_stages(&pipeline_string);
 
-    let result = writeln!(writer, "{}", stages.as_slice().join("\n"));
+    let output_lines = make_output_lines(stages);
+
+    let result =
+        writeln!(writer, "{}", output_lines.as_slice().join("\n"));
 
     match result {
         Ok(_) => (),
@@ -46,4 +44,14 @@ fn parse_stages(pipeline_string: &str) -> Vec<Stage> {
             .collect();
 
     return stages
+}
+
+fn make_output_lines(stages: Vec<Stage>) -> Vec<String> {
+    return
+        stages
+            .iter()
+            .map(|stage| {
+                return String::from("name: ") + &stage.name + ", command: " + &stage.command;
+            })
+            .collect();
 }
