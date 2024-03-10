@@ -6,9 +6,9 @@ pub fn run(pipeline_file: &str, writer: &mut impl Write) {
     let pipeline_string =
         fs::read_to_string(pipeline_file).unwrap();
 
-    let stages = parse_stages(&pipeline_string);
+    let pipeline = parse_pipeline(&pipeline_string);
 
-    let output_lines = make_output_lines(stages);
+    let output_lines = make_output_lines(pipeline.stages);
 
     let result =
         writeln!(writer, "{}", output_lines.as_slice().join("\n"));
@@ -19,12 +19,16 @@ pub fn run(pipeline_file: &str, writer: &mut impl Write) {
     }
 }
 
+struct Pipeline {
+    stages: Vec<Stage>
+}
+
 struct Stage {
     name: String,
     command: String
 }
 
-fn parse_stages(pipeline_string: &str) -> Vec<Stage> {
+fn parse_pipeline(pipeline_string: &str) -> Pipeline {
     let yaml: HashMap<String, Sequence> =
         serde_yaml::from_str(&pipeline_string).unwrap();
 
@@ -43,7 +47,7 @@ fn parse_stages(pipeline_string: &str) -> Vec<Stage> {
             })
             .collect();
 
-    return stages
+    return Pipeline { stages }
 }
 
 fn make_output_lines(stages: Vec<Stage>) -> Vec<String> {
