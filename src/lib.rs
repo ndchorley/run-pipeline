@@ -2,9 +2,9 @@ use std::{collections::HashMap, fs, io::Write};
 
 use serde_yaml::Sequence;
 
-pub fn run(writer: &mut impl Write) {
+pub fn run(pipeline_file: &str, writer: &mut impl Write) {
     let pipeline_string =
-        fs::read_to_string("tests/pipeline.yml").unwrap();
+        fs::read_to_string(pipeline_file).unwrap();
 
     let yaml: HashMap<String, Sequence> =
         serde_yaml::from_str(&pipeline_string).unwrap();

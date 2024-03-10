@@ -4,7 +4,7 @@ use pipeline_runner::run;
 fn it_displays_the_stages_in_pipeline_yml() {
     let mut output = Vec::new();
 
-    run(&mut output);
+    run("tests/pipeline.yml", &mut output);
 
     assert_eq!(
         as_string(output),
