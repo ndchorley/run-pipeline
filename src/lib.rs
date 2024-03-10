@@ -10,13 +10,8 @@ pub fn run(pipeline_file: &str, writer: &mut impl Write) {
 
     let output_lines = make_output_lines(pipeline.stages);
 
-    let result =
-        writeln!(writer, "{}", output_lines.as_slice().join("\n"));
-
-    match result {
-        Ok(_) => (),
-        Err(_) => ()
-    }
+    writeln!(writer, "{}", output_lines.as_slice().join("\n"))
+        .unwrap();
 }
 
 struct Pipeline {
