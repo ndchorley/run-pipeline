@@ -6,9 +6,8 @@ pub fn run(pipeline_file: &str, writer: &mut impl Write) {
     let pipeline_string =
         fs::read_to_string(pipeline_file).unwrap();
 
-    let stages_new = parse_stages(&pipeline_string);
-
-    let stages: Vec<String> = stages_new.iter()
+    let stages: Vec<String> =
+        parse_stages(&pipeline_string).iter()
         .map(|stage| {
             return String::from("name: ") + &stage.name + ", command: " + &stage.command;
         })
