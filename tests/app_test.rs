@@ -1,14 +1,17 @@
 use pipeline_runner::run;
 
 #[test]
-fn it_displays_a_message() {
+fn it_displays_the_stages_in_pipeline_yml() {
     let mut output = Vec::new();
 
     run(&mut output);
 
     assert_eq!(
         as_string(output),
-        "Hello pipeline-runner\n"
+        concat!(
+            "name: Build, command: ./build.sh\n",
+            "name: Deploy, command: ./deploy.sh\n"
+        )
     );
 }
 
