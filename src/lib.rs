@@ -1,6 +1,6 @@
 use std::{collections::HashMap, fs, io::Write};
 
-use serde_yaml::Sequence;
+use serde_yaml::{Sequence, Value};
 
 pub fn run(pipeline_file: &str, writer: &mut impl Write) {
     let pipeline_string =
@@ -32,17 +32,19 @@ fn parse_pipeline(pipeline_string: &str) -> Pipeline {
             .get("stages")
             .unwrap()
             .iter()
-            .map(|value| {
-                let stage = value.as_mapping().unwrap();
-
-                return Stage {
-                    name: stage.get("name").unwrap().as_str().unwrap().to_string(),
-                    command: stage.get("command").unwrap().as_str().unwrap().to_string()
-                };
-            })
+            .map(|value| parse_stage(value))
             .collect();
 
     return Pipeline { stages }
+}
+
+fn parse_stage(value: &Value) -> Stage {
+    let stage = value.as_mapping().unwrap();
+
+    return Stage {
+        name: stage.get("name").unwrap().as_str().unwrap().to_string(),
+        command: stage.get("command").unwrap().as_str().unwrap().to_string()
+    };
 }
 
 fn make_output_lines(stages: Vec<Stage>) -> Vec<String> {
