@@ -35,16 +35,16 @@ fn parse_pipeline(pipeline_string: &str) -> Pipeline {
             .map(|value| parse_stage(value))
             .collect();
 
-    return Pipeline { stages }
+    Pipeline { stages }
 }
 
 fn parse_stage(value: &Value) -> Stage {
     let stage = value.as_mapping().unwrap();
 
-    return Stage {
+    Stage {
         name: mandatory_string(stage, "name"),
         command: mandatory_string(stage, "command")
-    };
+    }
 }
 
 fn mandatory_string(mapping: &Mapping, field: &str) -> String {
@@ -52,11 +52,10 @@ fn mandatory_string(mapping: &Mapping, field: &str) -> String {
 }
 
 fn make_output_lines(stages: Vec<Stage>) -> Vec<String> {
-    return
-        stages
-            .iter()
-            .map(|stage| {
-                return String::from("name: ") + &stage.name + ", command: " + &stage.command;
-            })
-            .collect();
+    stages
+        .iter()
+        .map(|stage|
+            String::from("name: ") + &stage.name + ", command: " + &stage.command
+        )
+        .collect()
 }
