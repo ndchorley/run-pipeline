@@ -1,9 +1,11 @@
-use std::{fs, io::Write, process::Command};
+use std::{fs, io::Write};
 
 use domain::{Pipeline, Stage};
+use execution::execute;
 use parsing::parse_pipeline;
 
 pub mod domain;
+pub mod execution;
 pub mod parsing;
 
 pub fn run(pipeline_file: &str, writer: &mut impl Write) {
@@ -24,18 +26,4 @@ pub fn run(pipeline_file: &str, writer: &mut impl Write) {
             writeln!(writer, "{}", message).unwrap();
         }
     }
-}
-
-fn execute(stage: &Stage, writer: &mut impl Write) {
-    let running_stage_message =
-        String::from("Running ") + &stage.name + "...";
-    writeln!(writer, "{}", &running_stage_message).unwrap();
-
-    let output = Command::new(&stage.command).output().unwrap();
-
-    writeln!(writer, "{}", String::from_utf8(output.stdout).unwrap())
-        .unwrap();
-
-    let finished_stage_message = String::from(&stage.name) + " succeeded";
-    writeln!(writer, "{}", &finished_stage_message).unwrap();
 }
