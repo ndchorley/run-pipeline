@@ -8,7 +8,7 @@ pub fn parse_pipeline(pipeline_string: &str) -> Pipeline {
     let yaml: HashMap<String, Sequence> =
         serde_yaml::from_str(&pipeline_string).unwrap();
 
-    let stages: Vec<Stage> =
+    let stages =
         yaml
             .get("stages")
             .unwrap()
