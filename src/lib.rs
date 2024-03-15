@@ -3,21 +3,23 @@ use std::{collections::HashMap, fs, io::Write};
 use serde_yaml::{Mapping, Sequence, Value};
 
 pub fn run(pipeline_file: &str, writer: &mut impl Write) {
-    let pipeline_string =
+    let read_pipeline_result =
         fs::read_to_string(pipeline_file);
 
-    if pipeline_string.is_err() {
-        let message =
-            String::from("Could not find pipeline at ") + pipeline_file;
+    match read_pipeline_result {
+        Ok(pipeline_string) => {
+            let pipeline = parse_pipeline(&pipeline_string);
 
-        writeln!(writer, "{}", message).unwrap();
+            display_pipeline(pipeline, writer);
+        }
 
-        return
+        Err(_) => {
+            let message =
+                String::from("Could not find pipeline at ") + pipeline_file;
+
+            writeln!(writer, "{}", message).unwrap();
+        }
     }
-
-    let pipeline = parse_pipeline(&pipeline_string.unwrap());
-
-    display_pipeline(pipeline, writer);
 }
 
 struct Pipeline {
