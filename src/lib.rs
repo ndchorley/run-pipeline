@@ -17,10 +17,7 @@ pub fn run(pipeline_file: &str, writer: &mut impl Write) {
 
     let pipeline = parse_pipeline(&pipeline_string.unwrap());
 
-    let output_lines = make_output_lines(pipeline.stages);
-
-    writeln!(writer, "{}", output_lines.as_slice().join("\n"))
-        .unwrap();
+    display_pipeline(pipeline, writer);
 }
 
 struct Pipeline {
@@ -30,6 +27,13 @@ struct Pipeline {
 struct Stage {
     name: String,
     command: String
+}
+
+fn display_pipeline(pipeline: Pipeline, writer: &mut impl Write) {
+    let output_lines = make_output_lines(pipeline.stages);
+
+    writeln!(writer, "{}", output_lines.as_slice().join("\n"))
+        .unwrap();
 }
 
 fn parse_pipeline(pipeline_string: &str) -> Pipeline {
