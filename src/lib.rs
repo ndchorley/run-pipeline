@@ -4,9 +4,18 @@ use serde_yaml::{Mapping, Sequence, Value};
 
 pub fn run(pipeline_file: &str, writer: &mut impl Write) {
     let pipeline_string =
-        fs::read_to_string(pipeline_file).unwrap();
+        fs::read_to_string(pipeline_file);
 
-    let pipeline = parse_pipeline(&pipeline_string);
+    if pipeline_string.is_err() {
+        let message =
+            String::from("Could not find pipeline at ") + pipeline_file;
+
+        writeln!(writer, "{}", message).unwrap();
+
+        return
+    }
+
+    let pipeline = parse_pipeline(&pipeline_string.unwrap());
 
     let output_lines = make_output_lines(pipeline.stages);
 
