@@ -2,6 +2,10 @@ use std::{collections::HashMap, fs, io::Write};
 
 use serde_yaml::{Mapping, Sequence, Value};
 
+use domain::{Pipeline, Stage};
+
+pub mod domain;
+
 pub fn run(pipeline_file: &str, writer: &mut impl Write) {
     let read_pipeline_result =
         fs::read_to_string(pipeline_file);
@@ -20,15 +24,6 @@ pub fn run(pipeline_file: &str, writer: &mut impl Write) {
             writeln!(writer, "{}", message).unwrap();
         }
     }
-}
-
-struct Pipeline {
-    stages: Vec<Stage>
-}
-
-struct Stage {
-    name: String,
-    command: String
 }
 
 fn display_pipeline(pipeline: Pipeline, writer: &mut impl Write) {
