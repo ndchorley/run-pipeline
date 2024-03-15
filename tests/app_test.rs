@@ -1,7 +1,7 @@
 use run_pipeline::run;
 
 #[test]
-fn it_displays_the_stages_in_pipeline_yml() {
+fn it_runs_the_stages_in_the_pipeline() {
     let mut output = Vec::new();
 
     run("tests/pipeline.yml", &mut output);
@@ -9,8 +9,13 @@ fn it_displays_the_stages_in_pipeline_yml() {
     assert_eq!(
         as_string(output),
         concat!(
-            "name: Build, command: ./build.sh\n",
-            "name: Deploy, command: ./deploy.sh\n"
+            "Running Build...\n",
+            "some build output\n\n",
+            "Build succeeded\n",
+
+            "Running Deploy...\n",
+            "some deploy output\n\n",
+            "Deploy succeeded\n"
         )
     );
 }
