@@ -1,6 +1,6 @@
 use std::io::stdout;
 
-use pipeline_runner::run;
+use run_pipeline::run;
 
 fn main() {    
     run("pipeline.yml", &mut stdout());

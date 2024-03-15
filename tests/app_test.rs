@@ -1,4 +1,4 @@
-use pipeline_runner::run;
+use run_pipeline::run;
 
 #[test]
 fn it_displays_the_stages_in_pipeline_yml() {
