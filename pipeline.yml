@@ -2,3 +2,5 @@
 stages:
   - name: Build
     command: ./build.sh
+  - name: Install
+    command: ./install.sh
