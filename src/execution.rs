@@ -1,10 +1,9 @@
 use std::{io::Result, process::Command, process::Output};
 
-use crate::Stage;
 
-pub fn execute(stage: &Stage) -> Result<Output> {
+pub fn execute(command: &String) -> Result<Output> {
     let output =
-        Command::new(&stage.command).output();
+        Command::new(command).output();
 
     return output;
 }

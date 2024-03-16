@@ -21,7 +21,7 @@ pub fn run(pipeline_file: &str, writer: &mut impl Write) {
                 .for_each(|stage| {
                     display_running_message(&stage.name, writer);
 
-                    let output = execute(stage).unwrap();
+                    let output = execute(&stage.command).unwrap();
                     display_command_output(output, writer);
 
                     display_finished_message(&stage.name, writer);
