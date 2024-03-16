@@ -7,20 +7,20 @@ impl Pipeline {
         let _: Vec<_> =
             self.stages
                 .iter()
-                .map(|stage| { Self::run_stage(stage, writer) })
+                .map(|stage| { stage.run(writer) })
                 .take_while(|result| result.is_ok())
                 .collect();
     }
+}
 
-    fn run_stage(
-        stage: &Stage, writer: &mut impl Write
-    )  -> core::result::Result<(), ()> {
-        display_running_message(&stage.name, writer);
+impl Stage {
+    fn run(&self, writer: &mut impl Write) -> core::result::Result<(), ()> {
+        display_running_message(&self.name, writer);
 
-        let output = Self::execute(&stage.command).unwrap();
+        let output = Self::execute(&self.command).unwrap();
         display_command_output(output.stdout, writer);
 
-        display_finished_message(&stage.name, output.status, writer);
+        display_finished_message(&self.name, output.status, writer);
 
         if output.status.success() {
             Ok(())
