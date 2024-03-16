@@ -24,7 +24,7 @@ pub fn run(pipeline_file: &str, writer: &mut impl Write) {
                     let output = execute(stage).unwrap();
                     display_command_output(output, writer);
 
-                    display_finished_message(stage, writer);
+                    display_finished_message(&stage.name, writer);
                 });
         }
 
@@ -39,7 +39,7 @@ pub fn run(pipeline_file: &str, writer: &mut impl Write) {
 
 fn display_running_message(stage_name: &String, writer: &mut impl Write) {
     let running_stage_message =
-        String::from("Running ") + &stage_name + "...";
+        String::from("Running ") + stage_name + "...";
 
     writeln!(writer, "{}", &running_stage_message).unwrap();
 }
@@ -51,9 +51,9 @@ fn display_command_output(output: Output, writer: &mut impl Write) {
     writeln!(writer, "{}", &command_output).unwrap();
 }
 
-fn display_finished_message(stage: &Stage, writer: &mut impl Write) {
+fn display_finished_message(stage_name: &String, writer: &mut impl Write) {
     let finished_stage_message =
-        String::from(&stage.name) + " succeeded";
+        String::new() + stage_name + " succeeded";
 
     writeln!(writer, "{}", &finished_stage_message).unwrap();
 }
