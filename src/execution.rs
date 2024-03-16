@@ -3,11 +3,6 @@ use std::{io::Write, process::Command};
 use crate::Stage;
 
 pub fn execute(stage: &Stage, writer: &mut impl Write) {
-    let running_stage_message =
-        String::from("Running ") + &stage.name + "...";
-    writeln!(writer, "{}", &running_stage_message)
-        .unwrap();
-
     let output =
         Command::new(&stage.command).output().unwrap();
 
