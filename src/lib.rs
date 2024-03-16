@@ -1,4 +1,4 @@
-use std::{fs, io::Write};
+use std::{fs, io::Write, process::ExitStatus};
 
 use domain::{Pipeline, Stage};
 use execution::execute;
@@ -16,16 +16,24 @@ pub fn run(pipeline_file: &str, writer: &mut impl Write) {
         Ok(pipeline_string) => {
             let pipeline = parse_pipeline(&pipeline_string);
 
-            pipeline.stages
+            let _: Vec<_> = pipeline.stages
                 .iter()
-                .for_each(|stage| {
+                .map(|stage| {
                     display_running_message(&stage.name, writer);
 
                     let output = execute(&stage.command).unwrap();
                     display_command_output(output.stdout, writer);
 
-                    display_finished_message(&stage.name, writer);
-                });
+                    display_finished_message(&stage.name, output.status, writer);
+
+                    if output.status.success() {
+                        Ok(())
+                    } else {
+                        Err("")
+                    }
+                })
+                .take_while(|result| result.is_ok())
+                .collect();
         }
 
         Err(_) => {
@@ -51,9 +59,16 @@ fn display_command_output(output: Vec<u8>, writer: &mut impl Write) {
     writeln!(writer, "{}", &command_output).unwrap();
 }
 
-fn display_finished_message(stage_name: &String, writer: &mut impl Write) {
+fn display_finished_message(stage_name: &String, status: ExitStatus, writer: &mut impl Write) {
+    let status_string =
+        if status.success() {
+            "succeeded"
+        } else {
+            "failed"
+        };
+
     let finished_stage_message =
-        String::new() + stage_name + " succeeded";
+        String::new() + stage_name + " " + status_string;
 
     writeln!(writer, "{}", &finished_stage_message).unwrap();
 }
