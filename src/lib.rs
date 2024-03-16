@@ -45,21 +45,27 @@ pub fn run(pipeline_file: &str, writer: &mut impl Write) {
     }
 }
 
-fn display_running_message(stage_name: &String, writer: &mut impl Write) {
+fn display_running_message(
+    stage_name: &String, writer: &mut impl Write
+) {
     let running_stage_message =
         String::from("Running ") + stage_name + "...";
 
     writeln!(writer, "{}", &running_stage_message).unwrap();
 }
 
-fn display_command_output(output: Vec<u8>, writer: &mut impl Write) {
+fn display_command_output(
+    output: Vec<u8>, writer: &mut impl Write
+) {
     let command_output =
         String::from_utf8(output).unwrap();
 
     writeln!(writer, "{}", &command_output).unwrap();
 }
 
-fn display_finished_message(stage_name: &String, status: ExitStatus, writer: &mut impl Write) {
+fn display_finished_message(
+    stage_name: &String, status: ExitStatus, writer: &mut impl Write
+) {
     let status_string =
         if status.success() {
             "succeeded"
