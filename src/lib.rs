@@ -1,8 +1,6 @@
 use std::{fs, io::Write};
 
-use display::*;
 use domain::{Pipeline, Stage};
-use execution::execute;
 use parsing::parse_pipeline;
 
 pub mod display;
@@ -18,24 +16,7 @@ pub fn run(pipeline_file: &str, writer: &mut impl Write) {
         Ok(pipeline_string) => {
             let pipeline = parse_pipeline(&pipeline_string);
 
-            let _: Vec<_> = pipeline.stages
-                .iter()
-                .map(|stage| {
-                    display_running_message(&stage.name, writer);
-
-                    let output = execute(&stage.command).unwrap();
-                    display_command_output(output.stdout, writer);
-
-                    display_finished_message(&stage.name, output.status, writer);
-
-                    if output.status.success() {
-                        Ok(())
-                    } else {
-                        Err("")
-                    }
-                })
-                .take_while(|result| result.is_ok())
-                .collect();
+            pipeline.run_stages(writer);
         }
 
         Err(_) => {
