@@ -16,7 +16,9 @@ pub fn run(pipeline_file: &str, writer: &mut impl Write) {
         Ok(pipeline_string) => {
             let pipeline = parse_pipeline(&pipeline_string);
 
-            pipeline.stages.iter().for_each(|stage| execute(stage, writer));
+            pipeline.stages
+                .iter()
+                .for_each(|stage| execute(stage, writer));
         }
 
         Err(_) => {
