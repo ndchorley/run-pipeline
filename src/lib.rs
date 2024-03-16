@@ -1,4 +1,4 @@
-use std::{fs, io::Write, process::Output};
+use std::{fs, io::Write};
 
 use domain::{Pipeline, Stage};
 use execution::execute;
@@ -22,7 +22,7 @@ pub fn run(pipeline_file: &str, writer: &mut impl Write) {
                     display_running_message(&stage.name, writer);
 
                     let output = execute(&stage.command).unwrap();
-                    display_command_output(output, writer);
+                    display_command_output(output.stdout, writer);
 
                     display_finished_message(&stage.name, writer);
                 });
@@ -44,9 +44,9 @@ fn display_running_message(stage_name: &String, writer: &mut impl Write) {
     writeln!(writer, "{}", &running_stage_message).unwrap();
 }
 
-fn display_command_output(output: Output, writer: &mut impl Write) {
+fn display_command_output(output: Vec<u8>, writer: &mut impl Write) {
     let command_output =
-        String::from_utf8(output.stdout).unwrap();
+        String::from_utf8(output).unwrap();
 
     writeln!(writer, "{}", &command_output).unwrap();
 }
