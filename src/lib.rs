@@ -76,7 +76,7 @@ fn display_finished_message(
     let finished_stage_message =
         colour_start(status) + stage_name + " " + status_string + COLOUR_END;
 
-    writeln!(writer, "{}", &finished_stage_message).unwrap();
+    writeln!(writer, "{}\n", &finished_stage_message).unwrap();
 }
 
 fn colour_start(status: ExitStatus) -> String {
