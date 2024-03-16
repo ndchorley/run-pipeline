@@ -74,7 +74,16 @@ fn display_finished_message(
         };
 
     let finished_stage_message =
-        String::new() + stage_name + " " + status_string;
+        colour_start(status) + stage_name + " " + status_string + COLOUR_END;
 
     writeln!(writer, "{}", &finished_stage_message).unwrap();
 }
+
+fn colour_start(status: ExitStatus) -> String {
+    let colour_string =
+        if status.success() { "32" } else { "31" };
+
+    String::from("\x1B[0;") + colour_string + "m"
+}
+
+const COLOUR_END: &str = "\x1B[0m";
