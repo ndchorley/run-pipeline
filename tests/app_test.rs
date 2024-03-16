@@ -23,13 +23,12 @@ fn it_runs_the_stages_in_the_pipeline() {
 #[test]
 fn it_complains_if_the_pipeline_cant_be_found() {
     let mut output = Vec::new();
-    let pipeline_file = "tests/does-not-exist.yml";
 
-    run(pipeline_file, &mut output);
+    run("tests/does-not-exist.yml", &mut output);
 
     assert_eq!(
         as_string(output),
-        String::from("Could not find pipeline at ") + pipeline_file + "\n"
+        "Could not find pipeline at tests/does-not-exist.yml\n"
     )
 }
 
