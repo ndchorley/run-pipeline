@@ -36,9 +36,13 @@ pub fn display_finished_message(
 
 fn colour_start(status: ExitStatus) -> String {
     let colour_string =
-        if status.success() { "32" } else { "31" };
+        if status.success() { GREEN } else { RED };
 
     String::from("\x1B[0;") + colour_string + "m"
 }
+
+const GREEN: &str = "32";
+
+const RED: &str = "31";
 
 const COLOUR_END: &str = "\x1B[0m";
