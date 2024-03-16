@@ -19,7 +19,7 @@ pub fn run(pipeline_file: &str, writer: &mut impl Write) {
             pipeline.stages
                 .iter()
                 .for_each(|stage| {
-                    display_running_message(stage, writer);
+                    display_running_message(&stage.name, writer);
 
                     let output = execute(stage).unwrap();
                     display_command_output(output, writer);
@@ -37,9 +37,9 @@ pub fn run(pipeline_file: &str, writer: &mut impl Write) {
     }
 }
 
-fn display_running_message(stage: &Stage, writer: &mut impl Write) {
+fn display_running_message(stage_name: &String, writer: &mut impl Write) {
     let running_stage_message =
-        String::from("Running ") + &stage.name + "...";
+        String::from("Running ") + &stage_name + "...";
 
     writeln!(writer, "{}", &running_stage_message).unwrap();
 }
