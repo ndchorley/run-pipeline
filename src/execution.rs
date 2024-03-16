@@ -1,16 +1,10 @@
-use std::{io::Write, process::Command};
+use std::{io::Result, process::Command, process::Output};
 
 use crate::Stage;
 
-pub fn execute(stage: &Stage, writer: &mut impl Write) {
+pub fn execute(stage: &Stage) -> Result<Output> {
     let output =
-        Command::new(&stage.command).output().unwrap();
+        Command::new(&stage.command).output();
 
-    let command_output =
-        String::from_utf8(output.stdout).unwrap();
-    writeln!(writer, "{}", &command_output).unwrap();
-
-    let finished_stage_message =
-        String::from(&stage.name) + " succeeded";
-    writeln!(writer, "{}", &finished_stage_message).unwrap();
+    return output;
 }

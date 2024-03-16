@@ -21,7 +21,15 @@ pub fn run(pipeline_file: &str, writer: &mut impl Write) {
                 .for_each(|stage| {
                     display_running_message(stage, writer);
 
-                    execute(stage, writer);
+                    let output = execute(stage).unwrap();
+
+                    let command_output =
+                        String::from_utf8(output.stdout).unwrap();
+                    writeln!(writer, "{}", &command_output).unwrap();
+            
+                    let finished_stage_message =
+                        String::from(&stage.name) + " succeeded";
+                    writeln!(writer, "{}", &finished_stage_message).unwrap();
                 });
         }
 
