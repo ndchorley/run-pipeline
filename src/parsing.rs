@@ -4,7 +4,7 @@ use serde_yaml::{Mapping, Sequence, Value};
 use crate::Pipeline;
 use crate::Stage;
 
-pub fn parse_pipeline(pipeline_string: &str) -> Pipeline {
+pub fn parse_pipeline(pipeline_string: &str) -> Result<Pipeline, ()> {
     let yaml: HashMap<String, Sequence> =
         serde_yaml::from_str(&pipeline_string).unwrap();
 
@@ -16,7 +16,7 @@ pub fn parse_pipeline(pipeline_string: &str) -> Pipeline {
             .map(|value| parse_stage(value))
             .collect();
 
-    Pipeline { stages }
+    Ok(Pipeline { stages })
 }
 
 fn parse_stage(value: &Value) -> Stage {
