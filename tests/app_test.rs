@@ -56,7 +56,7 @@ fn it_complains_if_the_pipeline_cant_be_parsed() {
 
     assert_eq!(
         as_string(output),
-        "Could not parse pipeline at tests/unparseable-pipeline.yml\n"
+        "Could not parse pipeline\n"
     );
 }
 

@@ -19,7 +19,7 @@ pub fn run(pipeline_file: &str, writer: &mut impl Write) {
                 Ok(pipeline) => { pipeline.run_stages(writer); }
                 Err(_) => {
                     let message =
-                        String::from("Could not parse pipeline at ") + pipeline_file;
+                        String::from("Could not parse pipeline");
 
                     writeln!(writer, "{}", message).unwrap();
                 }
