@@ -4,8 +4,6 @@ use serde_yaml::{Mapping, Sequence, Value};
 use crate::Pipeline;
 use crate::Stage;
 
-pub struct ParsingError;
-
 pub fn parse_pipeline(pipeline_string: &str) -> Result<Pipeline, String> {
     let parse_result =
         serde_yaml::from_str::<HashMap<String, Sequence>>(&pipeline_string);
