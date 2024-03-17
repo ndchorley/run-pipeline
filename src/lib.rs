@@ -16,9 +16,7 @@ pub fn run(pipeline_file: &str, writer: &mut impl Write) {
             .and_then(|pipeline_string|
                 parse_pipeline(&pipeline_string)
             )
-            .map(|pipeline|
-                Ok::<(), String>(pipeline.run_stages(writer))
-            );
+            .and_then(|pipeline| pipeline.run_stages(writer));
 
     match result {
         Ok(_) => (),

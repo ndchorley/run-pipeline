@@ -3,13 +3,17 @@ use std::{io::{Result, Write}, process::{Command, Output}};
 use crate::{display::*, domain::*};
 
 impl Pipeline {
-    pub fn run_stages(&self, writer: &mut impl Write) {
+    pub fn run_stages(
+        &self, writer: &mut impl Write
+    ) -> core::result::Result<(), String> {
         let _: Vec<_> =
             self.stages
                 .iter()
                 .map(|stage| { stage.run(writer) })
                 .take_while(|result| result.is_ok())
                 .collect();
+
+        Ok(())
     }
 }
 
