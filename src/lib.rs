@@ -17,13 +17,9 @@ pub fn run(pipeline_file: &str, writer: &mut impl Write) {
         Ok(pipeline_string) => {
             match parse_pipeline(&pipeline_string) {
                 Ok(pipeline) => { pipeline.run_stages(writer); }
-                Err(_) => {
-                    let message =
-                        String::from("Could not parse pipeline");
-
+                Err(message) => {
                     writeln!(writer, "{}", message).unwrap();
                 }
-
             }
         }
 

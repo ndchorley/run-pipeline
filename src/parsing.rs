@@ -6,7 +6,7 @@ use crate::Stage;
 
 pub struct ParsingError;
 
-pub fn parse_pipeline(pipeline_string: &str) -> Result<Pipeline, ParsingError> {
+pub fn parse_pipeline(pipeline_string: &str) -> Result<Pipeline, String> {
     let parse_result =
         serde_yaml::from_str::<HashMap<String, Sequence>>(&pipeline_string);
 
@@ -23,9 +23,8 @@ pub fn parse_pipeline(pipeline_string: &str) -> Result<Pipeline, ParsingError> {
             Ok(Pipeline { stages })
         }
 
-        Err(_) => Err(ParsingError),
+        Err(_) => Err(String::from("Could not parse pipeline"))
     }
-
 }
 
 fn parse_stage(value: &Value) -> Stage {
