@@ -4,19 +4,28 @@ use serde_yaml::{Mapping, Sequence, Value};
 use crate::Pipeline;
 use crate::Stage;
 
-pub fn parse_pipeline(pipeline_string: &str) -> Result<Pipeline, ()> {
-    let yaml: HashMap<String, Sequence> =
-        serde_yaml::from_str(&pipeline_string).unwrap();
+pub struct ParsingError;
 
-    let stages =
-        yaml
-            .get("stages")
-            .unwrap()
-            .iter()
-            .map(|value| parse_stage(value))
-            .collect();
+pub fn parse_pipeline(pipeline_string: &str) -> Result<Pipeline, ParsingError> {
+    let parse_result =
+        serde_yaml::from_str::<HashMap<String, Sequence>>(&pipeline_string);
 
-    Ok(Pipeline { stages })
+    match parse_result {
+        Ok(yaml) => {
+            let stages =
+                yaml
+                    .get("stages")
+                    .unwrap()
+                    .iter()
+                    .map(|value| parse_stage(value))
+                    .collect();
+
+            Ok(Pipeline { stages })
+        }
+
+        Err(_) => Err(ParsingError),
+    }
+
 }
 
 fn parse_stage(value: &Value) -> Stage {

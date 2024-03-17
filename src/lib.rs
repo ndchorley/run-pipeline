@@ -14,10 +14,16 @@ pub fn run(pipeline_file: &str, writer: &mut impl Write) {
 
     match read_pipeline_result {
         Ok(pipeline_string) => {
-            let pipeline =
-                parse_pipeline(&pipeline_string).unwrap();
+            match parse_pipeline(&pipeline_string) {
+                Ok(pipeline) => { pipeline.run_stages(writer); }
+                Err(_) => {
+                    let message =
+                        String::from("Could not parse pipeline at ") + pipeline_file;
 
-            pipeline.run_stages(writer);
+                    writeln!(writer, "{}", message).unwrap();
+                }
+
+            }
         }
 
         Err(_) => {

@@ -48,6 +48,18 @@ fn it_complains_if_the_pipeline_cant_be_found() {
     )
 }
 
+#[test]
+fn it_complains_if_the_pipeline_cant_be_parsed() {
+    let mut output = Vec::new();
+
+    run("tests/unparseable-pipeline.yml", &mut output);
+
+    assert_eq!(
+        as_string(output),
+        "Could not parse pipeline at tests/unparseable-pipeline.yml\n"
+    );
+}
+
 fn as_string(bytes: Vec<u8>) -> String {
     String::from_utf8(bytes).unwrap()
 }
