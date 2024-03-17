@@ -1,6 +1,7 @@
 use std::io::Write;
 
 use domain::{Pipeline, Stage};
+use file::read_file;
 use parsing::parse_pipeline;
 
 pub mod display;
@@ -10,7 +11,7 @@ pub mod file;
 pub mod parsing;
 
 pub fn run(pipeline_file: &str, writer: &mut impl Write) {
-    let read_pipeline_result = file::read_file(pipeline_file);
+    let read_pipeline_result = read_file(pipeline_file);
 
     match read_pipeline_result {
         Ok(pipeline_string) => {
