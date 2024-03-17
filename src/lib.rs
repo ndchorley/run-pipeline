@@ -11,17 +11,17 @@ pub mod file;
 pub mod parsing;
 
 pub fn run(pipeline_file: &str, writer: &mut impl Write) {
-    let read_pipeline_result = read_file(pipeline_file);
+    let result =
+        read_file(pipeline_file)
+            .and_then(|pipeline_string|
+                parse_pipeline(&pipeline_string)
+            )
+            .map(|pipeline|
+                Ok::<(), String>(pipeline.run_stages(writer))
+            );
 
-    match read_pipeline_result {
-        Ok(pipeline_string) => {
-            match parse_pipeline(&pipeline_string) {
-                Ok(pipeline) => { pipeline.run_stages(writer); }
-                Err(message) => {
-                    writeln!(writer, "{}", message).unwrap();
-                }
-            }
-        }
+    match result {
+        Ok(_) => (),
 
         Err(message) => {
             writeln!(writer, "{}", message).unwrap();
