@@ -13,9 +13,7 @@ pub mod parsing;
 pub fn run(pipeline_file: &str, writer: &mut impl Write) {
     let result =
         read_file(pipeline_file)
-            .and_then(|pipeline_string|
-                parse_pipeline(&pipeline_string)
-            )
+            .and_then(|pipeline_string| parse_pipeline(&pipeline_string))
             .and_then(|pipeline| pipeline.run_stages(writer));
 
     match result {
