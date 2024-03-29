@@ -5,11 +5,9 @@ use crate::Pipeline;
 use crate::Stage;
 
 pub fn parse_pipeline(pipeline_string: &str) -> Result<Pipeline, String> {
-    let parse_result =
-        serde_yaml::from_str::<HashMap<String, Sequence>>(&pipeline_string);
-
-    match parse_result {
-        Ok(yaml) => {
+    serde_yaml::from_str::<HashMap<String, Sequence>>(&pipeline_string)
+        .map_err(|_|  { String::from("Could not parse pipeline") } )
+        .and_then(|yaml| {
             match yaml.get("stages") {
                 Some (stages_sequence) => {
                     let stages =
@@ -21,12 +19,9 @@ pub fn parse_pipeline(pipeline_string: &str) -> Result<Pipeline, String> {
                     Ok(Pipeline { stages })
                 }
 
-                None => Err(String::from("Could not parse pipeline: missing a sequence called 'stages'")),
+                None => Err(String::from("Could not parse pipeline: missing a sequence called 'stages'"))
             }
-        }
-
-        Err(_) => Err(String::from("Could not parse pipeline"))
-    }
+        })
 }
 
 fn parse_stage(value: &Value) -> Stage {
