@@ -60,6 +60,18 @@ fn it_complains_if_the_pipeline_cant_be_parsed() {
     );
 }
 
+#[test]
+fn it_complains_if_pipeline_is_missing_stages_sequence() {
+    let mut output = Vec::new();
+
+    run("tests/missing-stages-pipeline.yml", &mut output);
+
+    assert_eq!(
+        as_string(output),
+        "Could not parse pipeline: missing a sequence called 'stages'\n"
+    );
+}
+
 fn as_string(bytes: Vec<u8>) -> String {
     String::from_utf8(bytes).unwrap()
 }

@@ -10,15 +10,19 @@ pub fn parse_pipeline(pipeline_string: &str) -> Result<Pipeline, String> {
 
     match parse_result {
         Ok(yaml) => {
-            let stages =
-                yaml
-                    .get("stages")
-                    .unwrap()
-                    .iter()
-                    .map(|value| parse_stage(value))
-                    .collect();
+            match yaml.get("stages") {
+                Some (stages_sequence) => {
+                    let stages =
+                        stages_sequence
+                            .iter()
+                            .map(|value| parse_stage(value))
+                            .collect();
 
-            Ok(Pipeline { stages })
+                    Ok(Pipeline { stages })
+                }
+
+                None => Err(String::from("Could not parse pipeline: missing a sequence called 'stages'")),
+            }
         }
 
         Err(_) => Err(String::from("Could not parse pipeline"))
