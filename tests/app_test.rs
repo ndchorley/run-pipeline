@@ -1,5 +1,9 @@
 use run_pipeline::run;
 
+mod helpers;
+
+use helpers::as_string;
+
 #[test]
 fn it_runs_the_stages_in_the_pipeline() {
     let mut output = Vec::new();
@@ -70,8 +74,4 @@ fn it_complains_if_pipeline_is_missing_stages_sequence() {
         as_string(output),
         "Could not parse pipeline: missing a sequence called 'stages'\n"
     );
-}
-
-fn as_string(bytes: Vec<u8>) -> String {
-    String::from_utf8(bytes).unwrap()
 }
