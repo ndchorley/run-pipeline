@@ -24,21 +24,24 @@ fn find_stages_sequence(yaml: &HashMap<String, Vec<Value>>) -> Result<Vec<Value>
 }
 
 fn parse_stages(stages_sequence: Vec<Value>) -> Result<Vec<Stage>, String> {
-    let stages =
-        stages_sequence
-            .iter()
-            .map(|value| parse_stage(value))
-            .collect();
-
-    Ok(stages)
+    stages_sequence
+        .iter()
+        .map(|value| parse_stage(value))
+        .collect()
 }
 
-fn parse_stage(value: &Value) -> Stage {
-    let stage = value.as_mapping().unwrap();
+fn parse_stage(value: &Value) -> Result<Stage, String> {
+    match value.as_mapping() {
+        Some(stage) => Ok(
+            Stage {
+                name: mandatory_string(stage, "name"),
+                command: mandatory_string(stage, "command")
+            }
+        ),
 
-    Stage {
-        name: mandatory_string(stage, "name"),
-        command: mandatory_string(stage, "command")
+        None => Err(
+            String::from("Could not parse pipeline: stage must be a mapping with keys 'name' and 'command'")
+        )
     }
 }
 
