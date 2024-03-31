@@ -51,3 +51,15 @@ fn it_complains_if_a_stage_is_missing_a_name() {
         "Could not parse pipeline: stage missing key 'name'\n"
     );
 }
+
+#[test]
+fn it_complains_if_a_stage_is_missing_a_command() {
+    let mut output = Vec::new();
+
+    run("tests/invalid-pipelines/stage-missing-a-command-pipeline.yml", &mut output);
+
+    assert_eq!(
+        as_string(output),
+        "Could not parse pipeline: stage missing key 'command'\n"
+    );
+}
