@@ -34,8 +34,8 @@ fn parse_stage(value: &Value) -> Result<Stage, String> {
     match value.as_mapping() {
         Some(stage) => Ok(
             Stage {
-                name: mandatory_string_or_error(stage, "name")?,
-                command: mandatory_string_or_error(stage, "command")?
+                name: mandatory_string(stage, "name")?,
+                command: mandatory_string(stage, "command")?
             }
         ),
 
@@ -45,11 +45,7 @@ fn parse_stage(value: &Value) -> Result<Stage, String> {
     }
 }
 
-fn mandatory_string(mapping: &Mapping, field: &str) -> String {
-    mapping.get(field).unwrap().as_str().unwrap().to_string()
-}
-
-fn mandatory_string_or_error(mapping: &Mapping, field: &str) -> Result<String, String> {
+fn mandatory_string(mapping: &Mapping, field: &str) -> Result<String, String> {
     match mapping.get(field) {
         Some(value) => Ok(value.as_str().unwrap().to_string()),
         None => Err(
