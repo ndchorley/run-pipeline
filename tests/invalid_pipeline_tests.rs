@@ -39,3 +39,15 @@ fn it_complains_if_a_stage_is_not_a_mapping() {
         "Could not parse pipeline: stage must be a mapping with keys 'name' and 'command'\n"
     );
 }
+
+#[test]
+fn it_complains_if_a_stage_is_missing_a_name() {
+    let mut output = Vec::new();
+
+    run("tests/invalid-pipelines/stage-missing-a-name-pipeline.yml", &mut output);
+
+    assert_eq!(
+        as_string(output),
+        "Could not parse pipeline: stage missing key 'name'\n"
+    );
+}
