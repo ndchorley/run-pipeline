@@ -31,18 +31,17 @@ fn parse_stages(stages_sequence: Vec<Value>) -> Result<Vec<Stage>, String> {
 }
 
 fn parse_stage(value: &Value) -> Result<Stage, String> {
-    match value.as_mapping() {
-        Some(stage) => Ok(
-            Stage {
-                name: mandatory_string(stage, "name")?,
-                command: mandatory_string(stage, "command")?
-            }
-        ),
-
-        None => Err(
-            String::from("Could not parse pipeline: stage must be a mapping with keys 'name' and 'command'")
-        )
-    }
+    value
+        .as_mapping()
+        .ok_or(String::from("Could not parse pipeline: stage must be a mapping with keys 'name' and 'command'"))
+        .and_then(|stage| {
+            Ok(
+                Stage {
+                    name: mandatory_string(stage, "name")?,
+                    command: mandatory_string(stage, "command")?
+                }
+            )
+        })
 }
 
 fn mandatory_string(mapping: &Mapping, field: &str) -> Result<String, String> {
