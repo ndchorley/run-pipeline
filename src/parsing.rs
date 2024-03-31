@@ -17,10 +17,9 @@ fn parse_yaml(pipeline_string: &str) -> Result<HashMap<String, Sequence>, String
 }
 
 fn find_stages_sequence(yaml: &HashMap<String, Vec<Value>>) -> Result<Vec<Value>, String> {
-    match yaml.get("stages") {
-        Some(stages_sequence) => Ok(stages_sequence.to_vec()),
-        None => Err(String::from("Could not parse pipeline: missing a sequence called 'stages'"))
-    }
+    yaml.get("stages")
+        .ok_or(String::from("Could not parse pipeline: missing a sequence called 'stages'"))
+        .and_then(|stages_sequence| Ok(stages_sequence.to_vec()))
 }
 
 fn parse_stages(stages_sequence: Vec<Value>) -> Result<Vec<Stage>, String> {
