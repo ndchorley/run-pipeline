@@ -1,7 +1,7 @@
 ---
 stages:
   - name: Build
-    command: ./tests/failing-build.sh
+    command: ./tests/failing-build/build.sh
 
   - name: Deploy
     command: ./tests/deploy.sh

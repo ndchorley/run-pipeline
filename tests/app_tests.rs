@@ -28,7 +28,7 @@ fn it_runs_the_stages_in_the_pipeline() {
 fn it_does_not_run_subsequent_stages_after_a_failure() {
     let mut output = Vec::new();
 
-    run("tests/failing-build-pipeline.yml", &mut output);
+    run("tests/failing-build/pipeline.yml", &mut output);
 
     assert_eq!(
         as_string(output),
