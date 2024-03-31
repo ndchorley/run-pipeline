@@ -1,7 +1,0 @@
----
-stages:
-  - name: Build
-    command: ./tests/build.sh
-
-  - name: Deploy
-    command: ./tests/deploy.sh

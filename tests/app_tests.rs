@@ -8,7 +8,7 @@ use helpers::as_string;
 fn it_runs_the_stages_in_the_pipeline() {
     let mut output = Vec::new();
 
-    run("tests/pipeline.yml", &mut output);
+    run("tests/successful/pipeline.yml", &mut output);
 
     assert_eq!(
         as_string(output),
