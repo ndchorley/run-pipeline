@@ -12,7 +12,7 @@ pub fn parse_pipeline(pipeline_string: &str) -> Result<Pipeline, String> {
 }
 
 fn parse_yaml(pipeline_string: &str) -> Result<HashMap<String, Sequence>, String> {
-    serde_yaml::from_str::<HashMap<String, Sequence>>(&pipeline_string)
+    serde_yaml::from_str(&pipeline_string)
         .map_err(|_| { String::from("Could not parse pipeline") } )
 }
 
