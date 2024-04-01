@@ -1,0 +1,4 @@
+---
+stages:
+  - name: ["build"]
+  - command: ./build.sh

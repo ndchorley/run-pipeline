@@ -46,5 +46,10 @@ fn parse_stage(value: &Value) -> Result<Stage, String> {
 fn mandatory_string(mapping: &Mapping, field: &str) -> Result<String, String> {
     mapping.get(field)
         .ok_or(String::from("Could not parse pipeline: stage missing key '") + field + "'")
-        .and_then(|value| Ok(value.as_str().unwrap().to_string()))
+        .and_then(|value|
+            value
+                .as_str()
+                .ok_or(String::from("Could not parse pipeline: stage ") + field + " must be a string")
+        )
+        .and_then(|string_value| Ok(string_value.to_string()))
 }

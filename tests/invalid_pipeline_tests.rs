@@ -53,6 +53,18 @@ fn it_complains_if_a_stage_is_missing_a_name() {
 }
 
 #[test]
+fn it_complains_if_a_stage_name_is_not_a_string() {
+    let mut output = Vec::new();
+
+    run("tests/invalid-pipelines/stage-name-not-a-string-pipeline.yml", &mut output);
+
+    assert_eq!(
+        as_string(output),
+        "Could not parse pipeline: stage name must be a string\n"
+    );
+}
+
+#[test]
 fn it_complains_if_a_stage_is_missing_a_command() {
     let mut output = Vec::new();
 
