@@ -30,8 +30,7 @@ fn parse_stages(stages_sequence: Vec<Value>) -> Result<Vec<Stage>, String> {
 }
 
 fn parse_stage(value: &Value) -> Result<Stage, String> {
-    value
-        .as_mapping()
+    value.as_mapping()
         .ok_or(String::from("Could not parse pipeline: stage must be a mapping with keys 'name' and 'command'"))
         .and_then(|stage|
             Ok(
