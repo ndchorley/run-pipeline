@@ -46,5 +46,5 @@ fn it_complains_if_the_pipeline_cant_be_found() {
     assert_that!(as_string(output))
         .is_equal_to(
             "Could not find pipeline at tests/does-not-exist.yml\n".to_string()
-        )
+        );
 }
