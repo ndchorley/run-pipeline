@@ -12,15 +12,14 @@ fn it_runs_the_stages_in_the_pipeline() {
 
     assert_eq!(
         as_string(output),
-        concat!(
-            "Running Build...\n",
-            "some build output\n\n",
-            "\x1B[0;32mBuild succeeded\x1B[0m\n\n",
 
-            "Running Deploy...\n",
-            "some deploy output\n\n",
-            "\x1B[0;32mDeploy succeeded\x1B[0m\n\n"
-        )
+        "Running Build...\n\
+        some build output\n\n\
+        \x1B[0;32mBuild succeeded\x1B[0m\n\n\
+        \
+        Running Deploy...\n\
+        some deploy output\n\n\
+        \x1B[0;32mDeploy succeeded\x1B[0m\n\n"
     );
 }
 
@@ -32,11 +31,10 @@ fn it_does_not_run_subsequent_stages_after_a_failure() {
 
     assert_eq!(
         as_string(output),
-        concat!(
-            "Running Build...\n",
-            "some failure\n\n",
-            "\x1B[0;31mBuild failed\x1B[0m\n\n",
-        )
+
+        "Running Build...\n\
+        some failure\n\n\
+        \x1B[0;31mBuild failed\x1B[0m\n\n"
     );
 }
 
