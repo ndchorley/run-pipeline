@@ -1,11 +1,13 @@
 use std::{io::{Result, Write}, process::{Command, Output}};
 
-use crate::{display::*, domain::*};
+use crate::{display::*, domain::*, git::GitRepository};
 
 impl Pipeline {
     pub fn run_stages(
-        &self, writer: &mut impl Write
+        &self, writer: &mut impl Write, git_repository: &impl GitRepository
     ) -> core::result::Result<(), String> {
+        writeln!(writer, "Running on commit {}", git_repository.head()).unwrap();
+
         let _: Vec<_> =
             self.stages
                 .iter()
