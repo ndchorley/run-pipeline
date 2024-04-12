@@ -1,6 +1,6 @@
 use std::io::stdout;
 
-use run_pipeline::{git::{PlaceholderGitRepository}, run};
+use run_pipeline::{git::PlaceholderGitRepository, run};
 
 fn main() {
     run(
