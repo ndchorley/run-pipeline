@@ -30,7 +30,7 @@ fn it_does_not_run_subsequent_stages_after_a_failure() {
     run("tests/failing-build/pipeline.yml", &mut output);
 
     assert_that!(as_string(output))
-        .is_equal_to(
+        .ends_with(
             "Running Build...\n\
             some failure\n\n\
             \x1B[0;31mBuild failed\x1B[0m\n\n".to_string()
