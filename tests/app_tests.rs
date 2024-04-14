@@ -24,7 +24,7 @@ fn it_runs_the_stages_in_the_pipeline() {
 
     assert_that!(as_string(output))
         .is_equal_to(
-            "Running on commit 73c043215dfc973fe8a11eb2f761bc67b330eb3e\n\
+            "Running on commit \x1B[0;93m73c043215dfc973fe8a11eb2f761bc67b330eb3e\x1B[0m\n\n\
             Running Build...\n\
             some build output\n\n\
             \x1B[0;32mBuild succeeded\x1B[0m\n\n\
