@@ -44,7 +44,7 @@ pub fn display_finished_message(
 }
 
 fn coloured_message(message: &String, colour_string: &str) -> String {
-    String::from("\x1B[0;") + colour_string + "m" + message + COLOUR_END
+    String::from(COLOUR_START) + colour_string + "m" + message + COLOUR_END
 }
 
 
@@ -52,4 +52,5 @@ const GREEN: &str = "32";
 
 const RED: &str = "31";
 
+const COLOUR_START: &str = "\x1B[0;";
 const COLOUR_END: &str = "\x1B[0m";
