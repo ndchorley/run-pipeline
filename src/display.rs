@@ -28,18 +28,23 @@ pub fn display_finished_message(
             "failed"
         };
 
+    let colour_string =
+        if status.success() {
+            GREEN
+        } else {
+            RED
+        };
+
     let finished_stage_message =
-        colour_start(status) + stage_name + " " + status_string + COLOUR_END;
+        coloured_message(&format!("{} {}", stage_name, status_string), colour_string);
 
     writeln!(writer, "{}\n", &finished_stage_message).unwrap();
 }
 
-fn colour_start(status: ExitStatus) -> String {
-    let colour_string =
-        if status.success() { GREEN } else { RED };
-
-    String::from("\x1B[0;") + colour_string + "m"
+fn coloured_message(message: &String, colour_string: &str) -> String {
+    String::from("\x1B[0;") + colour_string + "m" + message + COLOUR_END
 }
+
 
 const GREEN: &str = "32";
 
