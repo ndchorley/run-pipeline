@@ -43,11 +43,16 @@ pub fn display_finished_message(
     ).unwrap();
 }
 
-pub fn display_running_on_commit_message(commit_hash: String, writer: &mut impl Write) {
-    writeln!(
-        writer,
-        "Running on commit \x1B[0;93m{}\x1B[0m\n", commit_hash
-    ).unwrap();
+pub fn display_running_on_commit_message(
+    commit_hash: String, writer: &mut impl Write
+) {
+    let message =
+        format!(
+            "Running on commit {}",
+            coloured_message(&commit_hash, YELLOW)
+        );
+
+    writeln!(writer,"{}\n", message).unwrap();
 }
 
 fn coloured_message(message: &String, colour_string: &str) -> String {
@@ -57,6 +62,7 @@ fn coloured_message(message: &String, colour_string: &str) -> String {
 
 const GREEN: &str = "32";
 const RED: &str = "31";
+const YELLOW: &str = "93";
 
 const COLOUR_START: &str = "\x1B[0;";
 const COLOUR_END: &str = "\x1B[0m";
