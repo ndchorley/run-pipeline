@@ -35,10 +35,12 @@ pub fn display_finished_message(
             RED
         };
 
-    let finished_stage_message =
-        coloured_message(&format!("{} {}", stage_name, status_string), colour_string);
+    let message = format!("{} {}", stage_name, status_string);
 
-    writeln!(writer, "{}\n", &finished_stage_message).unwrap();
+    writeln!(
+        writer,
+        "{}\n", coloured_message(&message, colour_string)
+    ).unwrap();
 }
 
 fn coloured_message(message: &String, colour_string: &str) -> String {
