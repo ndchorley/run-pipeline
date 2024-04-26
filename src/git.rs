@@ -12,9 +12,9 @@ impl GitRepository for FileSystemGitRepository {
     fn head(&self) -> String {
         let repository = Repository::open(&self.directory).unwrap();
 
-        let result = repository.head().unwrap();
+        let head = repository.head().unwrap();
 
-        result.target().unwrap().to_string()
+        head.target().unwrap().to_string()
     }
 }
 
