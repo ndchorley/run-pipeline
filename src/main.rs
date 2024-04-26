@@ -1,11 +1,11 @@
 use std::io::stdout;
 
-use run_pipeline::{git::PlaceholderGitRepository, run};
+use run_pipeline::{git::FileSystemGitRepository, run};
 
 fn main() {
     run(
         "pipeline.yml",
         &mut stdout(),
-        &PlaceholderGitRepository {}
+        &FileSystemGitRepository { directory: String::from(".") }
     );
 }

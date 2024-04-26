@@ -11,7 +11,7 @@ impl GitRepository for PlaceholderGitRepository {
 }
 
 pub struct FileSystemGitRepository {
-    directory: String
+    pub directory: String
 }
 
 impl GitRepository for FileSystemGitRepository {
