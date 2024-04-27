@@ -55,9 +55,7 @@ fn it_does_not_run_subsequent_stages_after_a_failure() {
 #[test]
 fn it_complains_if_the_pipeline_cant_be_found() {
     let mut output = Vec::new();
-    let git_repository = FakeGitRepository {
-        head: String::from("does-not-matter")
-    };
+    let git_repository = FakeGitRepository::new();
 
     run("tests/does-not-exist.yml", &mut output, &git_repository);
 
