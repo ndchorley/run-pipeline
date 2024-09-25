@@ -6,7 +6,7 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-assertor = "0.0.2"
+assertor = "0.0.3"
 git2 = "0.18.3"
 serde = "1.0"
 serde_yaml = "0.9"
