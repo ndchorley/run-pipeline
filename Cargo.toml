@@ -7,6 +7,6 @@ edition = "2021"
 
 [dependencies]
 assertor = "0.0.3"
-git2 = "0.18.3"
+git2 = "0.20.1"
 serde = "1.0"
 serde_yaml = "0.9"
