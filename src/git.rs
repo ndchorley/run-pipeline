@@ -2,6 +2,7 @@ use git2::Repository;
 
 pub trait GitRepository {
     fn head(&self) -> String;
+    fn has_uncommited_changes(&self) -> bool;
 }
 
 pub struct FileSystemGitRepository {
@@ -16,6 +17,8 @@ impl GitRepository for FileSystemGitRepository {
 
         head.target().unwrap().to_string()
     }
+    
+    fn has_uncommited_changes(&self) -> bool { false }
 }
 
 #[cfg(test)]

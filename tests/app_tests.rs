@@ -7,13 +7,33 @@ mod helpers;
 use helpers::as_string;
 use fake_git_repository::*;
 
+#[test]
+fn it_aborts_if_there_are_uncommited_changes() {
+    let mut output = Vec::new();
+
+    let git_repository = FakeGitRepository {
+        head: String::from("73c043215dfc973fe8a11eb2f761bc67b330eb3e"),
+        uncommited_changes: true
+    };
+
+    run(
+        "tests/successful/pipeline.yml",
+        &mut output,
+        &git_repository
+    );
+
+    assert_that!(as_string(output))
+        .is_equal_to("There are uncommited changes... aborting\n".to_string())
+}
 
 #[test]
 fn it_runs_the_stages_in_the_pipeline() {
     let mut output = Vec::new();
 
     let git_repository = FakeGitRepository {
-        head: String::from("73c043215dfc973fe8a11eb2f761bc67b330eb3e")
+        head: String::from("73c043215dfc973fe8a11eb2f761bc67b330eb3e"),
+        uncommited_changes: false
+
     };
 
     run(
@@ -39,7 +59,8 @@ fn it_runs_the_stages_in_the_pipeline() {
 fn it_does_not_run_subsequent_stages_after_a_failure() {
     let mut output = Vec::new();
     let git_repository = FakeGitRepository {
-        head: String::from("does-not-matter")
+        head: String::from("does-not-matter"),
+        uncommited_changes: false
     };
 
     run("tests/failing-build/pipeline.yml", &mut output, &git_repository);
@@ -56,7 +77,8 @@ fn it_does_not_run_subsequent_stages_after_a_failure() {
 fn it_complains_if_the_pipeline_cant_be_found() {
     let mut output = Vec::new();
     let git_repository = FakeGitRepository {
-        head: String::from("does-not-matter")
+        head: String::from("does-not-matter"),
+        uncommited_changes: false
     };
 
     run("tests/does-not-exist.yml", &mut output, &git_repository);
