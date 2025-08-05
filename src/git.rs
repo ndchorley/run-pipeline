@@ -23,8 +23,6 @@ impl GitRepository for FileSystemGitRepository {
 
 #[cfg(test)]
 mod tests {
-    use std::fs;
-
     use assertor::*;
     use git2::{Repository, Signature};
 
@@ -34,14 +32,19 @@ mod tests {
 
     #[test]
     fn it_returns_the_hash_of_the_latest_commit() {
-        let repository_path = "./some-repo";
+        let a_directory = temporary_directory();
+        let repository_path = a_directory.as_str();
         let commit_hash = create_repository_with_a_commit(&repository_path);
 
         let repository = FileSystemGitRepository { directory: String::from(repository_path) };
 
         assert_that!(repository.head()).is_equal_to(commit_hash);
+    }
 
-        remove_repository(repository_path)
+    fn temporary_directory() -> String {
+        let suffix = fastrand::i32(0..std::i32::MAX).to_string();
+
+        format!("/tmp/run-pipeline-repo{}", suffix)
     }
 
     fn create_repository_with_a_commit(path: &str) -> String {
@@ -62,9 +65,5 @@ mod tests {
         ).unwrap();
 
         commit.to_string()
-    }
-
-    fn remove_repository(repository_path: &str) {
-        fs::remove_dir_all(repository_path).unwrap();
     }
 }
