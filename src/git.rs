@@ -94,15 +94,16 @@ mod tests {
 
         let author = Signature::now("Some One", "someone@example.com").unwrap();
 
-        let commit = repository
-            .commit(
-                Some("HEAD"),
-                &author,
-                &author,
-                "Some commit message",
-                &tree,
-                &vec![]
-        ).unwrap();
+        let commit = 
+            repository
+                .commit(
+                    Some("HEAD"),
+                    &author,
+                    &author,
+                    "Some commit message",
+                    &tree,
+                    &vec![]
+                ).unwrap();
 
         commit.to_string()
     }
