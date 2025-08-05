@@ -41,6 +41,17 @@ mod tests {
         assert_that!(repository.head()).is_equal_to(commit_hash);
     }
 
+    #[test]
+    fn it_reports_when_there_are_no_uncommited_changes() {
+        let a_directory = temporary_directory();
+        let repository_path = a_directory.as_str();
+        let _ = create_repository_with_a_commit(&repository_path);
+
+        let repository = FileSystemGitRepository { directory: String::from(repository_path) };      
+
+        assert_that!(repository.has_uncommited_changes()).is_false();
+    }
+    
     fn temporary_directory() -> String {
         let suffix = fastrand::i32(0..std::i32::MAX).to_string();
 
