@@ -18,11 +18,24 @@ impl GitRepository for FileSystemGitRepository {
         head.target().unwrap().to_string()
     }
     
-    fn has_uncommited_changes(&self) -> bool { false }
+    fn has_uncommited_changes(&self) -> bool {
+        let new_files = 
+            Repository::open(&self.directory)
+                .unwrap()
+                .statuses(None)
+                .unwrap()
+                .iter()
+                .filter(|entry| { entry.status().is_wt_new() })
+                .count();
+        
+        new_files > 0
+     }
 }
 
 #[cfg(test)]
 mod tests {
+    use std::fs::File;
+
     use assertor::*;
     use git2::{Repository, Signature};
 
@@ -50,6 +63,22 @@ mod tests {
         let repository = FileSystemGitRepository { directory: String::from(repository_path) };      
 
         assert_that!(repository.has_uncommited_changes()).is_false();
+    }
+
+    #[test]
+    fn a_new_file_is_reported_as_an_uncommited_change() {
+        let a_directory = temporary_directory();
+        let repository_path = a_directory.as_str();
+        let _ = create_repository_with_a_commit(&repository_path);
+        add_file_to(&repository_path);
+
+        let repository = FileSystemGitRepository { directory: String::from(repository_path) };      
+
+        assert_that!(repository.has_uncommited_changes()).is_true();       
+    }
+    
+    fn add_file_to(repository_path: &str) {
+        let _ = File::create(format!("{}/some-file", repository_path));
     }
     
     fn temporary_directory() -> String {
