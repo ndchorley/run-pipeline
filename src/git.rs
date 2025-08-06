@@ -66,7 +66,7 @@ mod tests {
     }
 
     #[test]
-    fn a_new_file_is_reported_as_an_uncommited_change() {
+    fn an_untracked_file_is_reported_as_an_uncommited_change() {
         let a_directory = temporary_directory();
         let repository_path = a_directory.as_str();
         let _ = create_repository_with_a_commit(&repository_path);
