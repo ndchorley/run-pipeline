@@ -51,8 +51,8 @@ mod tests {
         let a_directory = temporary_directory();
         let repository_path = a_directory.as_str();
         let commit_hash = create_repository_with_a_commit(&repository_path);
-
-        let repository = FileSystemGitRepository { directory: String::from(repository_path) };
+        let repository =
+            FileSystemGitRepository { directory: String::from(repository_path) };
 
         assert_that!(repository.head()).is_equal_to(commit_hash);
     }
@@ -62,8 +62,8 @@ mod tests {
         let a_directory = temporary_directory();
         let repository_path = a_directory.as_str();
         let _ = create_repository_with_a_commit(&repository_path);
-
-        let repository = FileSystemGitRepository { directory: String::from(repository_path) };      
+        let repository =
+            FileSystemGitRepository { directory: String::from(repository_path) };
 
         assert_that!(repository.has_uncommited_changes()).is_false();
     }
@@ -73,9 +73,11 @@ mod tests {
         let a_directory = temporary_directory();
         let repository_path = a_directory.as_str();
         let _ = create_repository_with_a_commit(&repository_path);
+
         add_file(&repository_path, "some-file");
 
-        let repository = FileSystemGitRepository { directory: String::from(repository_path) };      
+        let repository =
+            FileSystemGitRepository { directory: String::from(repository_path) };
 
         assert_that!(repository.has_uncommited_changes()).is_true();       
     }
@@ -85,11 +87,13 @@ mod tests {
         let a_directory = temporary_directory();
         let repository_path = a_directory.as_str();
         let _ = create_repository_with_a_commit(&repository_path);
+
         let file_name = "some-file";
         add_file(&repository_path, file_name);
         stage_for_commit(&repository_path, file_name);
 
-        let repository = FileSystemGitRepository { directory: String::from(repository_path) };      
+        let repository =
+            FileSystemGitRepository { directory: String::from(repository_path) };
 
         assert_that!(repository.has_uncommited_changes()).is_true();       
     }
