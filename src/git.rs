@@ -70,15 +70,15 @@ mod tests {
         let a_directory = temporary_directory();
         let repository_path = a_directory.as_str();
         let _ = create_repository_with_a_commit(&repository_path);
-        add_file_to(&repository_path);
+        add_file(&repository_path, "some-file");
 
         let repository = FileSystemGitRepository { directory: String::from(repository_path) };      
 
         assert_that!(repository.has_uncommited_changes()).is_true();       
     }
     
-    fn add_file_to(repository_path: &str) {
-        let _ = File::create(format!("{}/some-file", repository_path));
+    fn add_file(repository_path: &str, file_name: &str) {
+        let _ = File::create(format!("{}/{}", repository_path, file_name));
     }
     
     fn temporary_directory() -> String {
