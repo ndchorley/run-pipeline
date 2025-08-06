@@ -25,7 +25,10 @@ impl GitRepository for FileSystemGitRepository {
                 .statuses(None)
                 .unwrap()
                 .iter()
-                .filter(|entry| { entry.status().is_wt_new() })
+                .filter(|entry| { 
+                    entry.status().is_wt_new() || 
+                    entry.status().is_index_new() 
+                })
                 .count();
         
         new_files > 0
@@ -34,7 +37,7 @@ impl GitRepository for FileSystemGitRepository {
 
 #[cfg(test)]
 mod tests {
-    use std::fs::File;
+    use std::{fs::File, path::Path};
 
     use assertor::*;
     use git2::{Repository, Signature};
@@ -76,6 +79,20 @@ mod tests {
 
         assert_that!(repository.has_uncommited_changes()).is_true();       
     }
+
+    #[test]
+    fn a_new_file_in_the_staging_area_is_reported_as_an_uncommited_change() {
+        let a_directory = temporary_directory();
+        let repository_path = a_directory.as_str();
+        let _ = create_repository_with_a_commit(&repository_path);
+        let file_name = "some-file";
+        add_file(&repository_path, file_name);
+        stage_for_commit(&repository_path, file_name);
+
+        let repository = FileSystemGitRepository { directory: String::from(repository_path) };      
+
+        assert_that!(repository.has_uncommited_changes()).is_true();       
+    }
     
     fn add_file(repository_path: &str, file_name: &str) {
         let _ = File::create(format!("{}/{}", repository_path, file_name));
@@ -106,5 +123,17 @@ mod tests {
                 ).unwrap();
 
         commit.to_string()
+    }
+
+    fn stage_for_commit(repository_path: &str, file_name: &str) {
+        let repository = Repository::open(repository_path).unwrap();
+
+        let mut index = repository.index().unwrap();
+        
+        index
+            .add_path(Path::new(file_name))
+            .unwrap();
+
+        index.write().unwrap();
     }
 }
