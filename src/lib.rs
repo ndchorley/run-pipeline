@@ -22,8 +22,7 @@ pub fn run(pipeline_file: &str, writer: &mut impl Write, git_repository: &impl G
     match result {
         Ok(_) => (),
 
-        Err(message) =>
-            writeln!(writer, "{}", message).unwrap()
+        Err(message) => writeln!(writer, "{}", message).unwrap()
     }
 }
 
