@@ -1,5 +1,5 @@
 use std::collections::HashMap;
-use serde_yaml::{Mapping, Sequence, Value};
+use yaml_serde::{Mapping, Sequence, Value};
 
 use crate::Pipeline;
 use crate::Stage;
@@ -12,7 +12,7 @@ pub fn parse_pipeline(pipeline_string: &str) -> Result<Pipeline, String> {
 }
 
 fn parse_yaml(pipeline_string: &str) -> Result<HashMap<String, Sequence>, String> {
-    serde_yaml::from_str(&pipeline_string)
+    yaml_serde::from_str(&pipeline_string)
         .map_err(|_| { String::from("Could not parse pipeline") } )
 }
 
