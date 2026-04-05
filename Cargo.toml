@@ -12,4 +12,4 @@ serde_yaml = "0.9.34"
 
 [dev-dependencies]
 assertor = "0.0.4"
-fastrand = "2.3.0"
+fastrand = "2.4.0"
