@@ -12,4 +12,4 @@ yaml_serde = "0.10.4"
 
 [dev-dependencies]
 assertor = "0.0.4"
-fastrand = "2.4.0"
+fastrand = "2.4.1"
