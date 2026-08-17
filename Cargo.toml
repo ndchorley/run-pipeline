@@ -5,7 +5,7 @@ edition = "2024"
 
 [dependencies]
 git2 = "0.21.0"
-serde = "1.0.228"
+serde = "1.0.229"
 yaml_serde = "0.10.4"
 
 [dev-dependencies]
