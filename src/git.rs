@@ -109,7 +109,13 @@ mod tests {
     }
 
     fn create_repository_with_a_commit(path: &str) -> String {
-        let repository = Repository::init(path).unwrap();
+        let _ = Repository::init(path).unwrap();
+        make_a_commit(path, "Some message")
+    }
+
+    fn make_a_commit(repository_path: &str, message: &str) -> String {
+        let repository = Repository::open(repository_path).unwrap();
+
         let tree =
             repository.find_tree(repository.index().unwrap().write_tree().unwrap()).unwrap();
 
@@ -121,7 +127,7 @@ mod tests {
                     Some("HEAD"),
                     &author,
                     &author,
-                    "Some commit message",
+                    message,
                     &tree,
                     &vec![]
                 ).unwrap();
