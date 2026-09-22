@@ -2,7 +2,7 @@ use git2::Repository;
 
 pub trait GitRepository {
     fn head(&self) -> String;
-    fn has_uncommited_changes(&self) -> bool;
+    fn has_uncommitted_changes(&self) -> bool;
 }
 
 pub struct FileSystemGitRepository {
@@ -18,7 +18,7 @@ impl GitRepository for FileSystemGitRepository {
         head.target().unwrap().to_string()
     }
     
-    fn has_uncommited_changes(&self) -> bool {
+    fn has_uncommitted_changes(&self) -> bool {
         let new_files = 
             Repository::open(&self.directory)
                 .unwrap()
@@ -58,18 +58,18 @@ mod tests {
     }
 
     #[test]
-    fn it_reports_when_there_are_no_uncommited_changes() {
+    fn it_reports_when_there_are_no_uncommitted_changes() {
         let a_directory = temporary_directory();
         let repository_path = a_directory.as_str();
         let _ = create_repository_with_a_commit(&repository_path);
         let repository =
             FileSystemGitRepository { directory: String::from(repository_path) };
 
-        assert_that!(repository.has_uncommited_changes()).is_false();
+        assert_that!(repository.has_uncommitted_changes()).is_false();
     }
 
     #[test]
-    fn an_untracked_file_is_reported_as_an_uncommited_change() {
+    fn an_untracked_file_is_reported_as_an_uncommitted_change() {
         let a_directory = temporary_directory();
         let repository_path = a_directory.as_str();
         let _ = create_repository_with_a_commit(&repository_path);
@@ -79,7 +79,7 @@ mod tests {
         let repository =
             FileSystemGitRepository { directory: String::from(repository_path) };
 
-        assert_that!(repository.has_uncommited_changes()).is_true();       
+        assert_that!(repository.has_uncommitted_changes()).is_true();
     }
 
     #[test]
@@ -95,7 +95,7 @@ mod tests {
         let repository =
             FileSystemGitRepository { directory: String::from(repository_path) };
 
-        assert_that!(repository.has_uncommited_changes()).is_true();       
+        assert_that!(repository.has_uncommitted_changes()).is_true();
     }
     
     fn add_file(repository_path: &str, file_name: &str) {

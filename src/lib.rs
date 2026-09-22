@@ -27,7 +27,7 @@ pub fn run(pipeline_file: &str, writer: &mut impl Write, git_repository: &impl G
 }
 
 fn check_for_uncommited_changes(git_repository: &impl GitRepository) -> Result<(), String> {
-    match git_repository.has_uncommited_changes() {
+    match git_repository.has_uncommitted_changes() {
             false => Ok(()),
             true => Err(String::from("There are uncommited changes... aborting")),
         }

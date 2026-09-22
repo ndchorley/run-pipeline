@@ -8,7 +8,7 @@ pub struct FakeGitRepository {
 impl GitRepository for FakeGitRepository {
     fn head(&self) -> String { self.head.to_owned() }
     
-    fn has_uncommited_changes(&self) -> bool {
+    fn has_uncommitted_changes(&self) -> bool {
         self.uncommited_changes
     }
 }
