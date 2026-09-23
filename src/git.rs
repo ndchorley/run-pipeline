@@ -117,9 +117,12 @@ mod tests {
         let repository = Repository::open(repository_path).unwrap();
 
         let tree =
-            repository.find_tree(repository.index().unwrap().write_tree().unwrap()).unwrap();
+            repository
+                .find_tree(repository.index().unwrap().write_tree().unwrap())
+                .unwrap();
 
-        let author = Signature::now("Some One", "someone@example.com").unwrap();
+        let author =
+            Signature::now("Some One", "someone@example.com").unwrap();
 
         let commit = 
             repository
