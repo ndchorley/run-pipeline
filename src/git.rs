@@ -51,7 +51,7 @@ mod tests {
         let a_directory = temporary_directory();
         let repository_path = a_directory.as_str();
         create_repository(&repository_path);
-        let commit_hash = make_a_commit(&repository_path, "Some message");
+        let commit_hash = make_a_commit(&repository_path);
         let repository =
             FileSystemGitRepository { directory: String::from(repository_path) };
 
@@ -113,7 +113,7 @@ mod tests {
         let _ = Repository::init(path).unwrap();
     }
 
-    fn make_a_commit(repository_path: &str, message: &str) -> String {
+    fn make_a_commit(repository_path: &str) -> String {
         let repository = Repository::open(repository_path).unwrap();
 
         let tree =
@@ -127,7 +127,7 @@ mod tests {
                     Some("HEAD"),
                     &author,
                     &author,
-                    message,
+                    "Some message",
                     &tree,
                     &vec![]
                 ).unwrap();
