@@ -27,7 +27,8 @@ impl GitRepository for FileSystemGitRepository {
                 .iter()
                 .filter(|entry| { 
                     entry.status().is_wt_new() || 
-                    entry.status().is_index_new() 
+                    entry.status().is_index_new() ||
+                    entry.status().is_wt_modified()
                 })
                 .count();
         
@@ -37,7 +38,7 @@ impl GitRepository for FileSystemGitRepository {
 
 #[cfg(test)]
 mod tests {
-    use std::{fs::File, path::Path};
+    use std::{fs::{File, OpenOptions}, io::Write, path::Path};
 
     use assertor::*;
     use git2::{Repository, Signature};
@@ -97,6 +98,34 @@ mod tests {
             FileSystemGitRepository { directory: String::from(repository_path) };
 
         assert_that!(repository.has_uncommitted_changes()).is_true();
+    }
+
+    #[test]
+    fn a_modified_file_is_reported_as_an_uncommitted_change() {
+        let a_directory = temporary_directory();
+        let repository_path = a_directory.as_str();
+        create_repository(&repository_path);
+
+        let file_name = "some-file";
+        add_file(&repository_path, file_name);
+        stage_for_commit(&repository_path, file_name);
+        make_a_commit(repository_path);
+        modify_file(repository_path, file_name);
+
+        let repository =
+            FileSystemGitRepository { directory: String::from(repository_path) };
+
+        assert_that!(repository.has_uncommitted_changes()).is_true();
+    }
+
+    fn modify_file(repository_path: &str, file_name: &str) {
+        let mut file =
+            OpenOptions::new()
+                .write(true)
+                .open(format!("{}/{}", repository_path, file_name))
+                .unwrap();
+
+        file.write(b"Some text here").unwrap();
     }
     
     fn add_file(repository_path: &str, file_name: &str) {
