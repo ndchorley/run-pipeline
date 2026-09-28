@@ -28,7 +28,8 @@ impl GitRepository for FileSystemGitRepository {
                 .filter(|entry| { 
                     entry.status().is_wt_new() || 
                     entry.status().is_index_new() ||
-                    entry.status().is_wt_modified()
+                    entry.status().is_wt_modified() ||
+                    entry.status().is_index_modified()
                 })
                 .count();
         
@@ -111,6 +112,25 @@ mod tests {
         stage_for_commit(&repository_path, file_name);
         make_a_commit(repository_path);
         modify_file(repository_path, file_name);
+
+        let repository =
+            FileSystemGitRepository { directory: String::from(repository_path) };
+
+        assert_that!(repository.has_uncommitted_changes()).is_true();
+    }
+
+    #[test]
+    fn a_modified_file_in_the_staging_area_is_reported_as_an_uncommitted_change() {
+        let a_directory = temporary_directory();
+        let repository_path = a_directory.as_str();
+        create_repository(&repository_path);
+
+        let file_name = "some-file";
+        add_file(repository_path, file_name);
+        stage_for_commit(repository_path, file_name);
+        make_a_commit(repository_path);
+        modify_file(repository_path, file_name);
+        stage_for_commit(repository_path, file_name);
 
         let repository =
             FileSystemGitRepository { directory: String::from(repository_path) };
