@@ -52,8 +52,8 @@ mod tests {
     fn it_returns_the_hash_of_the_latest_commit() {
         let a_directory = temporary_directory();
         let repository_path = a_directory.as_str();
-        create_repository(&repository_path);
-        let commit_hash = make_a_commit(&repository_path);
+        create_repository(repository_path);
+        let commit_hash = make_a_commit(repository_path);
         let repository =
             FileSystemGitRepository { directory: String::from(repository_path) };
 
@@ -64,7 +64,7 @@ mod tests {
     fn it_reports_when_there_are_no_uncommitted_changes() {
         let a_directory = temporary_directory();
         let repository_path = a_directory.as_str();
-        create_repository(&repository_path);
+        create_repository(repository_path);
         let repository =
             FileSystemGitRepository { directory: String::from(repository_path) };
 
@@ -75,9 +75,9 @@ mod tests {
     fn an_untracked_file_is_reported_as_an_uncommitted_change() {
         let a_directory = temporary_directory();
         let repository_path = a_directory.as_str();
-        create_repository(&repository_path);
+        create_repository(repository_path);
 
-        add_file(&repository_path, "some-file");
+        add_file(repository_path, "some-file");
 
         let repository =
             FileSystemGitRepository { directory: String::from(repository_path) };
@@ -89,11 +89,11 @@ mod tests {
     fn a_new_file_in_the_staging_area_is_reported_as_an_uncommited_change() {
         let a_directory = temporary_directory();
         let repository_path = a_directory.as_str();
-        create_repository(&repository_path);
+        create_repository(repository_path);
 
         let file_name = "some-file";
-        add_file(&repository_path, file_name);
-        stage_for_commit(&repository_path, file_name);
+        add_file(repository_path, file_name);
+        stage_for_commit(repository_path, file_name);
 
         let repository =
             FileSystemGitRepository { directory: String::from(repository_path) };
@@ -105,11 +105,11 @@ mod tests {
     fn a_modified_file_is_reported_as_an_uncommitted_change() {
         let a_directory = temporary_directory();
         let repository_path = a_directory.as_str();
-        create_repository(&repository_path);
+        create_repository(repository_path);
 
         let file_name = "some-file";
-        add_file(&repository_path, file_name);
-        stage_for_commit(&repository_path, file_name);
+        add_file(repository_path, file_name);
+        stage_for_commit(repository_path, file_name);
         make_a_commit(repository_path);
         modify_file(repository_path, file_name);
 
@@ -123,7 +123,7 @@ mod tests {
     fn a_modified_file_in_the_staging_area_is_reported_as_an_uncommitted_change() {
         let a_directory = temporary_directory();
         let repository_path = a_directory.as_str();
-        create_repository(&repository_path);
+        create_repository(repository_path);
 
         let file_name = "some-file";
         add_file(repository_path, file_name);
