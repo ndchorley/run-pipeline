@@ -8,12 +8,12 @@ use helpers::as_string;
 use stub_git_repository::*;
 
 #[test]
-fn it_aborts_if_there_are_uncommited_changes() {
+fn it_aborts_if_there_are_uncommitted_changes() {
     let mut output = Vec::new();
 
     let git_repository = StubGitRepository {
         head: String::from("73c043215dfc973fe8a11eb2f761bc67b330eb3e"),
-        uncommited_changes: true
+        uncommitted_changes: true
     };
 
     run(
@@ -32,7 +32,7 @@ fn it_runs_the_stages_in_the_pipeline() {
 
     let git_repository = StubGitRepository {
         head: String::from("73c043215dfc973fe8a11eb2f761bc67b330eb3e"),
-        uncommited_changes: false
+        uncommitted_changes: false
 
     };
 
@@ -60,7 +60,7 @@ fn it_does_not_run_subsequent_stages_after_a_failure() {
     let mut output = Vec::new();
     let git_repository = StubGitRepository {
         head: String::from("does-not-matter"),
-        uncommited_changes: false
+        uncommitted_changes: false
     };
 
     run("tests/failing-build/pipeline.yml", &mut output, &git_repository);
@@ -78,7 +78,7 @@ fn it_complains_if_the_pipeline_cant_be_found() {
     let mut output = Vec::new();
     let git_repository = StubGitRepository {
         head: String::from("does-not-matter"),
-        uncommited_changes: false
+        uncommitted_changes: false
     };
 
     run("tests/does-not-exist.yml", &mut output, &git_repository);

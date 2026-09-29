@@ -12,7 +12,7 @@ fn it_complains_if_the_pipeline_cant_be_parsed() {
     let mut output = Vec::new();
     let git_repository = StubGitRepository {
         head: String::from("does-not-matter"),
-        uncommited_changes: false,
+        uncommitted_changes: false,
     };
 
     run("tests/invalid-pipelines/unparseable-pipeline.yml", &mut output, &git_repository);
@@ -26,7 +26,7 @@ fn it_complains_if_the_pipeline_is_missing_a_stages_sequence() {
     let mut output = Vec::new();
     let git_repository = StubGitRepository {
         head: String::from("does-not-matter"),
-        uncommited_changes: false,
+        uncommitted_changes: false,
     };
 
     run("tests/invalid-pipelines/missing-stages-pipeline.yml", &mut output, &git_repository);
@@ -42,7 +42,7 @@ fn it_complains_if_a_stage_is_not_a_mapping() {
     let mut output = Vec::new();
     let git_repository = StubGitRepository {
         head: String::from("does-not-matter"),
-        uncommited_changes: false
+        uncommitted_changes: false
     };
 
     run("tests/invalid-pipelines/stage-not-a-mapping-pipeline.yml", &mut output, &git_repository);
@@ -58,7 +58,7 @@ fn it_complains_if_a_stage_is_missing_a_name() {
     let mut output = Vec::new();
     let git_repository = StubGitRepository {
         head: String::from("does-not-matter"),
-        uncommited_changes: false,
+        uncommitted_changes: false,
     };
 
     run("tests/invalid-pipelines/stage-missing-a-name-pipeline.yml", &mut output, &git_repository);
@@ -74,7 +74,7 @@ fn it_complains_if_a_stage_name_is_not_a_string() {
     let mut output = Vec::new();
     let git_repository = StubGitRepository {
         head: String::from("does-not-matter"),
-        uncommited_changes: false,
+        uncommitted_changes: false,
     };
 
     run("tests/invalid-pipelines/stage-name-not-a-string-pipeline.yml", &mut output, &git_repository);
@@ -90,7 +90,7 @@ fn it_complains_if_a_stage_is_missing_a_command() {
     let mut output = Vec::new();
     let git_repository = StubGitRepository {
         head: String::from("does-not-matter"),
-        uncommited_changes: false
+        uncommitted_changes: false
     };
 
     run("tests/invalid-pipelines/stage-missing-a-command-pipeline.yml", &mut output, &git_repository);
