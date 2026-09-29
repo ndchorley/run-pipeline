@@ -1,7 +1,7 @@
 use git2::Repository;
 
 pub trait GitRepository {
-    fn head(&self) -> String;
+    fn head(&self) -> Result<String, String>;
     fn has_uncommitted_changes(&self) -> bool;
 }
 
@@ -10,12 +10,12 @@ pub struct FileSystemGitRepository {
 }
 
 impl GitRepository for FileSystemGitRepository {
-    fn head(&self) -> String {
+    fn head(&self) -> Result<String, String> {
         let repository = Repository::open(&self.directory).unwrap();
 
         let head = repository.head().unwrap();
 
-        head.target().unwrap().to_string()
+        Ok(head.target().unwrap().to_string())
     }
     
     fn has_uncommitted_changes(&self) -> bool {
@@ -57,7 +57,7 @@ mod tests {
         let repository =
             FileSystemGitRepository { directory: String::from(repository_path) };
 
-        assert_that!(repository.head()).is_equal_to(commit_hash);
+        assert_that!(repository.head().unwrap()).is_equal_to(commit_hash);
     }
 
     #[test]
