@@ -1,16 +1,16 @@
 use assertor::*;
 use run_pipeline::run;
 
-mod fake_git_repository;
+mod stub_git_repository;
 mod helpers;
 
-use fake_git_repository::*;
+use stub_git_repository::*;
 use helpers::as_string;
 
 #[test]
 fn it_complains_if_the_pipeline_cant_be_parsed() {
     let mut output = Vec::new();
-    let git_repository = FakeGitRepository {
+    let git_repository = StubGitRepository {
         head: String::from("does-not-matter"),
         uncommited_changes: false,
     };
@@ -24,7 +24,7 @@ fn it_complains_if_the_pipeline_cant_be_parsed() {
 #[test]
 fn it_complains_if_the_pipeline_is_missing_a_stages_sequence() {
     let mut output = Vec::new();
-    let git_repository = FakeGitRepository {
+    let git_repository = StubGitRepository {
         head: String::from("does-not-matter"),
         uncommited_changes: false,
     };
@@ -40,7 +40,7 @@ fn it_complains_if_the_pipeline_is_missing_a_stages_sequence() {
 #[test]
 fn it_complains_if_a_stage_is_not_a_mapping() {
     let mut output = Vec::new();
-    let git_repository = FakeGitRepository {
+    let git_repository = StubGitRepository {
         head: String::from("does-not-matter"),
         uncommited_changes: false
     };
@@ -56,7 +56,7 @@ fn it_complains_if_a_stage_is_not_a_mapping() {
 #[test]
 fn it_complains_if_a_stage_is_missing_a_name() {
     let mut output = Vec::new();
-    let git_repository = FakeGitRepository {
+    let git_repository = StubGitRepository {
         head: String::from("does-not-matter"),
         uncommited_changes: false,
     };
@@ -72,7 +72,7 @@ fn it_complains_if_a_stage_is_missing_a_name() {
 #[test]
 fn it_complains_if_a_stage_name_is_not_a_string() {
     let mut output = Vec::new();
-    let git_repository = FakeGitRepository {
+    let git_repository = StubGitRepository {
         head: String::from("does-not-matter"),
         uncommited_changes: false,
     };
@@ -88,7 +88,7 @@ fn it_complains_if_a_stage_name_is_not_a_string() {
 #[test]
 fn it_complains_if_a_stage_is_missing_a_command() {
     let mut output = Vec::new();
-    let git_repository = FakeGitRepository {
+    let git_repository = StubGitRepository {
         head: String::from("does-not-matter"),
         uncommited_changes: false
     };

@@ -1,11 +1,11 @@
 use run_pipeline::git::GitRepository;
 
-pub struct FakeGitRepository {
+pub struct StubGitRepository {
     pub head: String,
     pub uncommited_changes: bool
 }
 
-impl GitRepository for FakeGitRepository {
+impl GitRepository for StubGitRepository {
     fn head(&self) -> String { self.head.to_owned() }
     
     fn has_uncommitted_changes(&self) -> bool {

@@ -1,17 +1,17 @@
 use assertor::*;
 use run_pipeline::run;
 
-mod fake_git_repository;
+mod stub_git_repository;
 mod helpers;
 
 use helpers::as_string;
-use fake_git_repository::*;
+use stub_git_repository::*;
 
 #[test]
 fn it_aborts_if_there_are_uncommited_changes() {
     let mut output = Vec::new();
 
-    let git_repository = FakeGitRepository {
+    let git_repository = StubGitRepository {
         head: String::from("73c043215dfc973fe8a11eb2f761bc67b330eb3e"),
         uncommited_changes: true
     };
@@ -30,7 +30,7 @@ fn it_aborts_if_there_are_uncommited_changes() {
 fn it_runs_the_stages_in_the_pipeline() {
     let mut output = Vec::new();
 
-    let git_repository = FakeGitRepository {
+    let git_repository = StubGitRepository {
         head: String::from("73c043215dfc973fe8a11eb2f761bc67b330eb3e"),
         uncommited_changes: false
 
@@ -58,7 +58,7 @@ fn it_runs_the_stages_in_the_pipeline() {
 #[test]
 fn it_does_not_run_subsequent_stages_after_a_failure() {
     let mut output = Vec::new();
-    let git_repository = FakeGitRepository {
+    let git_repository = StubGitRepository {
         head: String::from("does-not-matter"),
         uncommited_changes: false
     };
@@ -76,7 +76,7 @@ fn it_does_not_run_subsequent_stages_after_a_failure() {
 #[test]
 fn it_complains_if_the_pipeline_cant_be_found() {
     let mut output = Vec::new();
-    let git_repository = FakeGitRepository {
+    let git_repository = StubGitRepository {
         head: String::from("does-not-matter"),
         uncommited_changes: false
     };
