@@ -11,7 +11,8 @@ pub struct FileSystemGitRepository {
 
 impl GitRepository for FileSystemGitRepository {
     fn head(&self) -> Result<String, String> {
-        let repository = Repository::open(&self.directory).unwrap();
+        let repository =
+            Repository::open(&self.directory).unwrap();
 
         let head = repository.head().unwrap();
 

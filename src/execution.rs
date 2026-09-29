@@ -6,7 +6,10 @@ impl Pipeline {
     pub fn run_stages(
         &self, writer: &mut impl Write, git_repository: &impl GitRepository
     ) -> core::result::Result<(), String> {
-        display_running_on_commit_message(git_repository.head().unwrap(), writer);
+        display_running_on_commit_message(
+            git_repository.head().unwrap(),
+            writer
+        );
 
         let _: Vec<_> =
             self.stages
