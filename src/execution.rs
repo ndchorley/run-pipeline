@@ -1,11 +1,11 @@
 use std::{io::{Result, Write}, process::{Command, Output}};
 
-use crate::{display::*, domain::*, git::GitRepository};
+use crate::{display::*, domain::*, errors::Error::{self, Other}, git::GitRepository};
 
 impl Pipeline {
     pub fn run_stages(
         &self, writer: &mut impl Write, git_repository: &impl GitRepository
-    ) -> core::result::Result<(), String> {
+    ) -> core::result::Result<(), Error> {
         display_running_on_commit_message(
             git_repository.head().unwrap(),
             writer
@@ -23,7 +23,7 @@ impl Pipeline {
 }
 
 impl Stage {
-    fn run(&self, writer: &mut impl Write) -> core::result::Result<(), ()> {
+    fn run(&self, writer: &mut impl Write) -> core::result::Result<(), Error> {
         display_running_message(&self.name, writer);
 
         let output = Self::execute(&self.command).unwrap();
@@ -34,7 +34,7 @@ impl Stage {
         if output.status.success() {
             Ok(())
         } else {
-            Err(())
+            Err(Other(String::from("")))
         }
     }
 

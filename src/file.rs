@@ -1,8 +1,10 @@
 use std::fs;
 
-pub fn read_file(pipeline_file: &str) -> Result<String, String> {
+use crate::errors::Error::{self, Other};
+
+pub fn read_file(pipeline_file: &str) -> Result<String, Error> {
     fs::read_to_string(pipeline_file)
         .map_err(|_| {
-            String::from("Could not find pipeline at ") + pipeline_file
+            Other(String::from("Could not find pipeline at ") + pipeline_file)
     })
 }

@@ -5,8 +5,11 @@ use file::read_file;
 use git::GitRepository;
 use parsing::parse_pipeline;
 
+use crate::errors::Error::{self, Other};
+
 pub mod display;
 pub mod domain;
+pub mod errors;
 pub mod execution;
 pub mod file;
 pub mod git;
@@ -22,13 +25,18 @@ pub fn run(pipeline_file: &str, writer: &mut impl Write, git_repository: &impl G
     match result {
         Ok(_) => (),
 
-        Err(message) => writeln!(writer, "{}", message).unwrap()
+        Err(error) => {
+            match error {
+                Error::InvalidPipeline(message) => writeln!(writer, "{}", message).unwrap(),
+                Other(message) => writeln!(writer, "{}", message).unwrap(),
+            }
+        }
     }
 }
 
-fn check_for_uncommited_changes(git_repository: &impl GitRepository) -> Result<(), String> {
+fn check_for_uncommited_changes(git_repository: &impl GitRepository) -> Result<(), Error> {
     match git_repository.has_uncommitted_changes() {
             false => Ok(()),
-            true => Err(String::from("There are uncommited changes... aborting")),
+            true => Err(Other(String::from("There are uncommited changes... aborting"))),
         }
 }
