@@ -5,7 +5,7 @@ use file::read_file;
 use git::GitRepository;
 use parsing::parse_pipeline;
 
-use crate::errors::Error::{self, Other};
+use crate::errors::{Error::{self, Other}, message_for};
 
 pub mod display;
 pub mod domain;
@@ -25,12 +25,8 @@ pub fn run(pipeline_file: &str, writer: &mut impl Write, git_repository: &impl G
     match result {
         Ok(_) => (),
 
-        Err(error) => {
-            match error {
-                Error::InvalidPipeline(message) => writeln!(writer, "{}", message).unwrap(),
-                Other(message) => writeln!(writer, "{}", message).unwrap(),
-            }
-        }
+        Err(error) =>
+            writeln!(writer, "{}", message_for(error)).unwrap(),
     }
 }
 
