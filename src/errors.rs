@@ -6,7 +6,7 @@ pub enum Error {
 pub fn message_for(error: Error) -> String {
     match error {
         Error::InvalidPipeline(reason) =>
-            format!("{}", reason),
+            format!("Could not parse pipeline: {}", reason),
         Error::Other(reason) => reason,
     }
 }

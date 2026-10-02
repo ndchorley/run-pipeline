@@ -15,12 +15,12 @@ pub fn parse_pipeline(pipeline_string: &str) -> Result<Pipeline, Error> {
 
 fn parse_yaml(pipeline_string: &str) -> Result<HashMap<String, Sequence>, Error> {
     yaml_serde::from_str(&pipeline_string)
-        .map_err(|_| { InvalidPipeline(String::from("Could not parse pipeline: invalid YAML")) } )
+        .map_err(|_| { InvalidPipeline(String::from("invalid YAML")) } )
 }
 
 fn find_stages_sequence(yaml: &HashMap<String, Vec<Value>>) -> Result<Vec<Value>, Error> {
     yaml.get("stages")
-        .ok_or(InvalidPipeline(String::from("Could not parse pipeline: missing a sequence called 'stages'")))
+        .ok_or(InvalidPipeline(String::from("missing a sequence called 'stages'")))
         .and_then(|stages_sequence| Ok(stages_sequence.to_vec()))
 }
 
@@ -33,7 +33,7 @@ fn parse_stages(stages_sequence: Vec<Value>) -> Result<Vec<Stage>, Error> {
 
 fn parse_stage(value: &Value) -> Result<Stage, Error> {
     value.as_mapping()
-        .ok_or(InvalidPipeline(String::from("Could not parse pipeline: stage must be a mapping with keys 'name' and 'command'")))
+        .ok_or(InvalidPipeline(String::from("stage must be a mapping with keys 'name' and 'command'")))
         .and_then(|stage|
             Ok(
                 Stage {
@@ -46,11 +46,11 @@ fn parse_stage(value: &Value) -> Result<Stage, Error> {
 
 fn mandatory_string(mapping: &Mapping, field: &str) -> Result<String, Error> {
     mapping.get(field)
-        .ok_or(InvalidPipeline(String::from("Could not parse pipeline: stage missing key '") + field + "'"))
+        .ok_or(InvalidPipeline(String::from("stage missing key '") + field + "'"))
         .and_then(|value|
             value
                 .as_str()
-                .ok_or(InvalidPipeline(String::from("Could not parse pipeline: stage ") + field + " must be a string"))
+                .ok_or(InvalidPipeline(String::from("stage ") + field + " must be a string"))
         )
         .and_then(|string_value| Ok(string_value.to_string()))
 }
