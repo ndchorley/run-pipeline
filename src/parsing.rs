@@ -15,7 +15,7 @@ pub fn parse_pipeline(pipeline_string: &str) -> Result<Pipeline, Error> {
 
 fn parse_yaml(pipeline_string: &str) -> Result<HashMap<String, Sequence>, Error> {
     yaml_serde::from_str(&pipeline_string)
-        .map_err(|_| { InvalidPipeline(String::from("Could not parse pipeline")) } )
+        .map_err(|_| { InvalidPipeline(String::from("Could not parse pipeline: invalid YAML")) } )
 }
 
 fn find_stages_sequence(yaml: &HashMap<String, Vec<Value>>) -> Result<Vec<Value>, Error> {

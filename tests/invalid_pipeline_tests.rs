@@ -18,7 +18,7 @@ fn it_complains_if_the_pipeline_cant_be_parsed() {
     run("tests/invalid-pipelines/unparseable-pipeline.yml", &mut output, &git_repository);
 
     assert_that!(as_string(output))
-        .is_equal_to("Could not parse pipeline\n".to_string());
+        .is_equal_to("Could not parse pipeline: invalid YAML\n".to_string());
 }
 
 #[test]
