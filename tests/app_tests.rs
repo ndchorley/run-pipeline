@@ -1,11 +1,31 @@
 use assertor::*;
 use run_pipeline::run;
 
+mod failing_git_repository;
 mod stub_git_repository;
 mod helpers;
 
 use helpers::as_string;
 use stub_git_repository::*;
+use failing_git_repository::*;
+
+#[test]
+fn it_aborts_if_not_in_a_git_repository() {
+    let mut output = Vec::new();
+
+    let git_repository =
+            FailingGitRepositoryDueToAbsenceOfUnderlyingRepository {};
+
+    run(
+        "tests/successful/pipeline.yml",
+        &mut output,
+        &git_repository
+    );
+
+    assert_that!(as_string(output))
+        .is_equal_to("Not in a Git repository\n".to_string())
+
+}
 
 #[test]
 fn it_aborts_if_there_are_uncommitted_changes() {
