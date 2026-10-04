@@ -1,4 +1,4 @@
-use run_pipeline::git::GitRepository;
+use run_pipeline::{errors::Error, git::GitRepository};
 
 pub struct StubGitRepository {
     pub head: String,
@@ -10,7 +10,7 @@ impl GitRepository for StubGitRepository {
         Ok(self.head.to_owned())
     }
     
-    fn has_uncommitted_changes(&self) -> bool {
-        self.uncommitted_changes
+    fn has_uncommitted_changes(&self) -> Result<bool, Error> {
+        Ok(self.uncommitted_changes)
     }
 }

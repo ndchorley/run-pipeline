@@ -1,8 +1,10 @@
 use git2::Repository;
 
+use crate::errors::Error;
+
 pub trait GitRepository {
     fn head(&self) -> Result<String, String>;
-    fn has_uncommitted_changes(&self) -> bool;
+    fn has_uncommitted_changes(&self) -> Result<bool, Error>;
 }
 
 pub struct FileSystemGitRepository {
@@ -19,7 +21,7 @@ impl GitRepository for FileSystemGitRepository {
         Ok(head.target().unwrap().to_string())
     }
     
-    fn has_uncommitted_changes(&self) -> bool {
+    fn has_uncommitted_changes(&self) -> Result<bool, Error> {
         let new_files = 
             Repository::open(&self.directory)
                 .unwrap()
@@ -34,7 +36,7 @@ impl GitRepository for FileSystemGitRepository {
                 })
                 .count();
         
-        new_files > 0
+        Ok(new_files > 0)
      }
 }
 
@@ -69,7 +71,7 @@ mod tests {
         let repository =
             FileSystemGitRepository { directory: String::from(repository_path) };
 
-        assert_that!(repository.has_uncommitted_changes()).is_false();
+        assert_that!(repository.has_uncommitted_changes()).has_ok(false);
     }
 
     #[test]
@@ -83,7 +85,7 @@ mod tests {
         let repository =
             FileSystemGitRepository { directory: String::from(repository_path) };
 
-        assert_that!(repository.has_uncommitted_changes()).is_true();
+        assert_that!(repository.has_uncommitted_changes()).has_ok(true);
     }
 
     #[test]
@@ -99,7 +101,7 @@ mod tests {
         let repository =
             FileSystemGitRepository { directory: String::from(repository_path) };
 
-        assert_that!(repository.has_uncommitted_changes()).is_true();
+        assert_that!(repository.has_uncommitted_changes()).has_ok(true);
     }
 
     #[test]
@@ -117,7 +119,7 @@ mod tests {
         let repository =
             FileSystemGitRepository { directory: String::from(repository_path) };
 
-        assert_that!(repository.has_uncommitted_changes()).is_true();
+        assert_that!(repository.has_uncommitted_changes()).has_ok(true);
     }
 
     #[test]
@@ -136,7 +138,7 @@ mod tests {
         let repository =
             FileSystemGitRepository { directory: String::from(repository_path) };
 
-        assert_that!(repository.has_uncommitted_changes()).is_true();
+        assert_that!(repository.has_uncommitted_changes()).has_ok(true);
     }
 
     fn modify_file(repository_path: &str, file_name: &str) {

@@ -1,3 +1,4 @@
+#[derive(Debug)]
 pub enum Error {
     NoPipelineFound(String),
     InvalidPipeline(String),

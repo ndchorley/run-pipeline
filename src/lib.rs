@@ -32,7 +32,12 @@ pub fn run(pipeline_file: &str, writer: &mut impl Write, git_repository: &impl G
 
 fn check_for_uncommitted_changes(git_repository: &impl GitRepository) -> Result<(), Error> {
     match git_repository.has_uncommitted_changes() {
-            false => Ok(()),
-            true => Err(UncommittedChanges),
-        }
+        Ok(answer) => {
+            match answer {
+                false => Ok(()),
+                true => Err(UncommittedChanges),
+            }
+        },
+        Err(_) => todo!()
+    }
 }
