@@ -37,5 +37,6 @@ fn check_for_uncommitted_changes(git_repository: &impl GitRepository) -> Result<
                 false => Ok(()),
                 true => Err(UncommittedChanges),
             }
-        })
+        }
+    )
 }
