@@ -1,6 +1,6 @@
 use git2::Repository;
 
-use crate::errors::Error;
+use crate::errors::Error::{self, NoGitRepositoryFound};
 
 pub trait GitRepository {
     fn head(&self) -> Result<String, String>;
@@ -22,22 +22,23 @@ impl GitRepository for FileSystemGitRepository {
     }
     
     fn has_uncommitted_changes(&self) -> Result<bool, Error> {
-        let new_files = 
-            Repository::open(&self.directory)
-                .unwrap()
-                .statuses(None)
-                .unwrap()
-                .iter()
-                .filter(|entry| { 
-                    entry.status().is_wt_new() || 
-                    entry.status().is_index_new() ||
-                    entry.status().is_wt_modified() ||
-                    entry.status().is_index_modified()
-                })
-                .count();
-        
-        Ok(new_files > 0)
-     }
+        Repository::open(&self.directory)
+            .map_err(|_| NoGitRepositoryFound)
+            .map(|repository| {
+                repository
+                    .statuses(None)
+                    .unwrap()
+                    .iter()
+                    .filter(|entry| {
+                        entry.status().is_wt_new() ||
+                        entry.status().is_index_new() ||
+                        entry.status().is_wt_modified() ||
+                        entry.status().is_index_modified()
+                    })
+                    .count()
+            }
+        ).map(|new_files| new_files > 0)
+    }
 }
 
 #[cfg(test)]
@@ -47,7 +48,7 @@ mod tests {
     use assertor::*;
     use git2::{Repository, Signature};
 
-    use crate::git::GitRepository;
+    use crate::{errors::Error::NoGitRepositoryFound, git::GitRepository};
 
     use super::FileSystemGitRepository;
 
@@ -61,6 +62,16 @@ mod tests {
             FileSystemGitRepository { directory: String::from(repository_path) };
 
         assert_that!(repository.head().unwrap()).is_equal_to(commit_hash);
+    }
+
+    #[test]
+    fn asking_for_uncommitted_changes_fails_if_the_directory_doesnt_contain_a_repository() {
+        let a_directory = temporary_directory();
+        let repository_path = a_directory.as_str();
+        let repository =
+            FileSystemGitRepository { directory: String::from(repository_path) };
+
+        assert_that!(repository.has_uncommitted_changes()).has_err(NoGitRepositoryFound);
     }
 
     #[test]
