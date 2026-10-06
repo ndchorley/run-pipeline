@@ -43,7 +43,7 @@ fn it_aborts_if_there_are_uncommitted_changes() {
     );
 
     assert_that!(as_string(output))
-        .is_equal_to("There are uncommited changes\n".to_string())
+        .is_equal_to("There are uncommitted changes\n".to_string())
 }
 
 #[test]

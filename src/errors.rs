@@ -15,7 +15,7 @@ pub fn message_for(error: Error) -> String {
             format!("Could not parse pipeline: {}", reason),
         Error::NoGitRepositoryFound => String::from("Not in a Git repository"),
         Error::UncommittedChanges =>
-            String::from("There are uncommited changes"),
+            String::from("There are uncommitted changes"),
         Error::Other(reason) => reason,
     }
 }
